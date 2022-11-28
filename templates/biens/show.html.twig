@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Biens{% endblock %}
+
+{% block body %}
+    <section class="w3l-content-with-photo-4" id="about">
+        <div id="content-with-photo4-block" class="py-5">
+            <div class="container py-md-3">
+                <div class="cwp4-two row">
+
+                    <div class="cwp4-text col-lg-6">
+                        <h3>{{ bien.nom }}</h3>
+                        <p>{{ bien.description }}</p>
+                        <ul class="cont-4">
+                            <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.pieces }} Pièces</li>
+                            <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.surface }} M2 </li>
+                            <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.etage }} Etages</li>
+                            <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.etat }}</li>
+                            <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.typeBien }}</li>
+                            {% if bien.neuf == true %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Neuf</li>
+                            {% endif %}
+                            {% if bien.type == true %}
+                                {% set type = 'A Vendre' %}
+                            {% else %}
+                                {% set type = 'A Louer' %}
+                            {% endif %}
+                            <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ type }}</li>
+                            <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.ville.nom }}</li>
+
+                        </ul>
+                        <a class="btn btn-secondary btn-theme3 mt-3" href="#team"> About Our Team</a>
+                    </div>
+                    {% set image = bien.images|first %}
+
+                    {% if image.url is defined %}
+                        <div class="cwp4-image col-lg-6 pl-lg-5 mt-lg-0 mt-5">
+                            <img src="{{ asset("assets/images/"  ~ image.url) }}" class="img-fluid" alt="" />
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w3l-team-main-6">
+        <!-- /team-grids -->
+        <div class="team-content" id="team" style="padding: 0px;">
+            <div class="container">
+                <div class="d-grid grid-col-4 text-center mt-5 pt-3">
+                    {% for image in bien.images %}
+                        {% if image is defined %}
+                            {% if image.url is empty %}
+                            {% else %}
+                                <div class="team-main-6">
+                                    <div class="column-6">
+                                        <a href="#"><img style="float: left;width:  300px;height: 300px;object-fit: cover;" class="img-responsive" src="{{ asset("assets/images/"  ~ image.url) }}" alt=" "></a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+        <!-- /team-grids -->
+    </section>
+
+{% endblock %}

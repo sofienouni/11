@@ -1,0 +1,122 @@
+{{ form_start(form) }}
+<div id="addEmployeeModal" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ bien.nom }}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                {{ form_row(form._token) }}
+                <div class="modal-body" style="padding-left: 4rem;padding-right: 4rem;">
+                    <div class="form-group">
+                        <label>{{ form_label(form.nom) }}</label>
+                        {{ form_widget(form.nom,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.description) }}</label>
+                        {{ form_widget(form.description,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.pieces) }}</label>
+                        {{ form_widget(form.pieces,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.surface) }}</label>
+                        {{ form_widget(form.surface,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.etat) }}</label>
+                        {{ form_widget(form.etat,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.etage) }}</label>
+                        {{ form_widget(form.etage,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.chauffage) }}</label>
+                        {{ form_widget(form.chauffage,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.climatisation) }}</label>
+                        {{ form_widget(form.climatisation,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.ascenceur) }}</label>
+                        {{ form_widget(form.ascenceur,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.concierge) }}</label>
+                        {{ form_widget(form.concierge,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.gardien) }}</label>
+                        {{ form_widget(form.gardien,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.cideosurveillance) }}</label>
+                        {{ form_widget(form.cideosurveillance,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.maisongardien) }}</label>
+                        {{ form_widget(form.maisongardien,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.eclairageexterieur) }}</label>
+                        {{ form_widget(form.eclairageexterieur,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.type) }}</label>
+                        {{ form_widget(form.type,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.neuf) }}</label>
+                        {{ form_widget(form.neuf,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.typeBien) }}</label>
+                        {{ form_widget(form.typeBien,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.prix) }}</label>
+                        {{ form_widget(form.prix,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.ville) }}</label>
+                        {{ form_widget(form.ville,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>{{ form_label(form.photo) }}</label>
+                        {{ form_widget(form.photo,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{ form_end(form) }}
+

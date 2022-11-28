@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+    <section class="form-12" id="home">
+        {{ form_start(form) }}
+        <div class="form-12-content">
+            <div class="container">
+                <div class="grid grid-column-2 ">
+                    <div class="column2">
+                    </div>
+                    <div class="column1">
+                            <div class="form-top">
+                                {{ form_row(form.type) }}
+                                {{ form_row(form.typeBien) }}
+
+                            </div>
+                            <div class="form-top">
+                                {{ form_row(form.ville) }}
+                                {{ form_row(form.prix) }}
+                            </div>
+                            <div class="form-top">
+                                {{ form_row(form.pieces) }}
+                                {{ form_row(form.surface) }}
+                            </div>
+                            <div class="form-top">
+                                {{ form_row(form.neuf) }}
+                            </div>
+                            <button type="submit" class="btn">Submit</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </section>
+
+
+<section class="grids-4" id="properties">
+    <div id="grids4-block" class="py-5">
+        <div class="container py-md-3">
+            <div class="row mt-5 pt-3">
+            {% for bien in pager %}
+                <div class="grids4-info  col-lg-4 col-md-6">
+                    <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/g7.jpg") }}" class="img-fluid" alt=""></a>
+                    <ul class="location-top">
+                        {% if bien.type ==1 %}
+                            <li class="rent">A Louer</li>
+                        {% else %}
+                            <li class="rent">A Vendre</li>
+                        {% endif %}
+                        {% if bien.neuf ==1 %}
+                            <li class="open-1">Neuf</li>
+                        {% endif %}
+                        <li class="rent">{{ bien.ville.nom }}</li>
+                    </ul>
+                    <div class="info-bg">
+                        <h5><a href="{{ path('app_biens_show', {'id': bien.id}) }}">{{ bien.nom }}</a></h5>
+                        <p>{{ bien.prix}}  DT</p>
+                        <ul>
+                            <li><span class="fa fa-bed"></span> {{ bien.pieces }} chambres</li>
+                            <li><span class="fa fa-home"></span>{{ bien.etat }}</li>
+                            <li><span class="fa fa-share-square-o"></span> {{ bien.surface }} mètres</li>
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+            {{ pagerfanta(pager) }}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
