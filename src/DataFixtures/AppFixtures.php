@@ -77,6 +77,7 @@ class AppFixtures extends Fixture
             $biens->setConcierge($faker->boolean());
             $biens->setEclairageexterieur($faker->boolean());
             $biens->setGardien($faker->boolean());
+            $biens->setRef($faker->numberBetween(10000,15000));
             $biens->setMaisongardien($faker->boolean());
             $biens->setPieces($faker->numberBetween(1,5));
             $biens->setSurface($faker->numberBetween(20,700));

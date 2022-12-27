@@ -76,6 +76,9 @@ class Biens
     #[ORM\Column(nullable: true)]
     private ?int $surface = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ref = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -341,6 +344,18 @@ class Biens
     public function setSurface(?int $surface): self
     {
         $this->surface = $surface;
+
+        return $this;
+    }
+
+    public function getRef(): ?string
+    {
+        return $this->ref;
+    }
+
+    public function setRef(?string $ref): self
+    {
+        $this->ref = $ref;
 
         return $this;
     }

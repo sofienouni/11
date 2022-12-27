@@ -1,8 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_login.html.twig' %}
 
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+<section class="w3l-contacts-2" id="contact">
+    <div class="contacts-main">
+
+        <div class="form-41-mian py-5">
+            <div class="container py-md-3">
+                <div class="d-grid align-form-map">
+                    <div class="form-inner-cont">
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -14,7 +21,7 @@
         </div>
     {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
     <label for="inputEmail">Email</label>
     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
     <label for="inputPassword">Password</label>
@@ -36,7 +43,15 @@
     #}
 
     <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
+        Connexion
     </button>
 </form>
+                    </div>
+
+                    <div class="contact-right">
+                        <img src="assets/images/g12.jpg" class="img-fluid" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
 {% endblock %}

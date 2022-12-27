@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\BienSearch;
 use App\Entity\BiensearchParams;
+use App\Entity\Messages;
 use App\Entity\Villes;
 use App\Form\BiensearchParamsType;
 use App\Form\BienSearchType;
+use App\Form\MessagesType;
 use App\Repository\BiensRepository;
+use App\Repository\MessagesRepository;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Doctrine\ORM\EntityManagerInterface;
@@ -112,30 +115,18 @@ class HomeController extends AbstractController
     }
 
     #[Route('/contact', name: 'app_contact')]
-    public function contact(BiensRepository $biensRepository, Request $request): Response
+    public function contact(Request $request, MessagesRepository $messagesRepository): Response
     {
-
-        $villes = $this->manager->getRepository(Villes::class)->findAll();
-        $biensearch = new BiensearchParams();
-        $form = $this->createForm(BiensearchParamsType::class, $biensearch);
+        $message = new Messages();
+        $form = $this->createForm(MessagesType::class, $message);
         $form->handleRequest($request);
-        $SearchParams = null;
         if ($form->isSubmitted() && $form->isValid()) {
-            $SearchParams = $form->getData();
+            $messagesRepository->save($message, true);
+            $this->addFlash('success', 'Votre message a été envoyer avec succes. Nous vous contacterons dans les plusbrefs délais.');
+            return $this->redirectToRoute('app_contact', [], Response::HTTP_SEE_OTHER);
         }
-        $vente = 1;
-
-        $queryBuilder = $biensRepository->findAllFieldPaginatedwithparams($SearchParams,$vente);
-        $adapter = new QueryAdapter($queryBuilder);
-        $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
-            $adapter,
-            $request->query->get('page', 1),
-            9
-        );
         return $this->render('home/contact.html.twig', [
-            'villes' => $villes,
             'form' => $form->createView(),
-            'pager' => $pagerfanta,
         ]);
     }
 

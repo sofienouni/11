@@ -16,12 +16,14 @@ class BiensearchParamsType extends AbstractType
     {
         $builder
             ->add('type', ChoiceType::class, [
+                'label' => false,
                 'choices' => [
                     'Types de Transaction' => 'Types de Transaction',
                     'A Louer' => 'A Louer',
                     'A Vendre' => 'A Vendre',
                 ],])
             ->add('typeBien', ChoiceType::class, [
+                'label' => false,
                 'choices' => [
                     'Types Du Bien' => 'Types Du Bien',
                     'Appartement' => 'Appartement',
@@ -34,10 +36,12 @@ class BiensearchParamsType extends AbstractType
                     'Cave' => 'Cave',
                 ],])
             ->add('ville', EntityType::class, [
+                'label' => false,
                 'class' => Villes::class,
                 'placeholder' => 'Choisir une ville',
                 'required' => false])
             ->add('prix', ChoiceType::class, [
+                'label' => false,
                 'choices' => [
                     'Prix/DT' => 'Prix/DT',
                     '0 - 1000' => '0 - 1000',
@@ -47,6 +51,7 @@ class BiensearchParamsType extends AbstractType
                     '+ 10000' => '+ 10000',
                 ],])
             ->add('pieces', ChoiceType::class, [
+                'label' => false,
                 'choices' => [
                     'Nombre de Pièces' => 'Nombre de Pièces',
                     '1' => '1',
@@ -57,6 +62,7 @@ class BiensearchParamsType extends AbstractType
                     '6' => '6+',
                 ],])
             ->add('surface', ChoiceType::class, [
+                'label' => false,
                 'choices' => [
                     'Surfaces m2' => 'Surfaces m2',
 
@@ -68,6 +74,7 @@ class BiensearchParamsType extends AbstractType
                     '300+' => '6',
                 ],])
             ->add('neuf', ChoiceType::class, [
+                'label' => false,
                 'choices' => [
                     'Bien neuf' => 'Bien neuf',
                     'OUI' => '1',

@@ -22,18 +22,19 @@
                     <div class="d-grid align-form-map">
                         <div class="form-inner-cont">
 
-                            <form action="" method="post" class="main-input">
+                            {{ form_start(form) }}
                                 <div class="top-inputs d-grid">
-                                    <input type="text" placeholder="Nom" name="w3lName" id="w3lName" required="">
-                                    <input type="text" placeholder="Prénom" name="w3lName" id="w3lName" required="">
-                                    <input type="email" name="Email" placeholder="Email" id="w3lSender" required="">
+                                    {{ form_row(form.nom) }}
+                                    {{ form_row(form.prenom) }}
                                 </div>
-                                <input type="text" placeholder="Phone Number" name="w3lName" id="w3lName" required="">
-                                <textarea placeholder="Message" name="w3lMessage" id="w3lMessage" required=""></textarea>
+                            {{ form_row(form.email) }}
+                            {{ form_row(form.telephone) }}
+                            {{ form_row(form.message) }}
+                            {{ form_row(form.ref) }}
                                 <div class="text-right">
                                     <button type="submit" class="btn btn-theme3">Envoyer</button>
                                 </div>
-                            </form>
+                            {{ form_end(form) }}
                         </div>
 
                         <div class="contact-right">

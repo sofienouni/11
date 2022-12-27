@@ -16,12 +16,14 @@ class BienSearchType extends AbstractType
     {
         $builder
             ->add('type', ChoiceType::class, [
+                'label' => false,
                 'choices' => [
                     'Types de Transaction' => 'Types de Transaction',
                     'A Louer' => 'A Louer',
                     'A Vendre' => 'A Vendre',
                 ],])
             ->add('typeBien', ChoiceType::class, [
+                'label' => false,
                 'choices' => [
                     'Types Du Bien' => 'Types Du Bien',
                     'Appartement' => 'Appartement',
@@ -34,8 +36,13 @@ class BienSearchType extends AbstractType
                     'Cave' => 'Cave',
                 ],])
             ->add('ville', EntityType::class, [
-                'class' => Villes::class,])
+                'placeholder' => 'Choisir une ville',
+                'label' => false,
+                'class' => Villes::class,
+
+            ])
             ->add('prix', ChoiceType::class, [
+                'label' => false,
                 'choices' => [
                     'Prix/DT' => 'Prix/DT',
                     '0 - 1000' => '0 - 1000',
