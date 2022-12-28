@@ -26,7 +26,7 @@ class BiensController extends AbstractController
     }
 
     #[Route('/new', name: 'app_biens_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, BiensRepository $biensRepository): Response
+    public function new(Request $request, BiensRepository $biensRepository, SluggerInterface $slugger, ImagesRepository $imagesRepository): Response
     {
         $bien = new Biens();
         $form = $this->createForm(BiensType::class, $bien);
@@ -34,6 +34,33 @@ class BiensController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $biensRepository->save($bien, true);
+            $liste_images = $form->get('photo')->getData();
+            foreach ($liste_images as $images){
+                if ($images) {
+                    $originalFilename = pathinfo($images->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $images->guessExtension();
+
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $images->move(
+                            $this->getParameter('images_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    $image = new Images();
+                    $image->setUrl($newFilename);
+                    $image->setBien($bien);
+                    $imagesRepository->save($image, true);
+                }
+            }
+
 
             return $this->redirectToRoute('app_biens_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -59,6 +86,12 @@ class BiensController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $previews_images = $imagesRepository->findBy(
+                ['bien' => $bien]
+            );
+            foreach ($previews_images as $previews_image)
+                $imagesRepository->remove($previews_image);
+
             $liste_images = $form->get('photo')->getData();
             foreach ($liste_images as $images){
                 if ($images) {
