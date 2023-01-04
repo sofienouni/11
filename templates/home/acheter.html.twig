@@ -11,6 +11,9 @@
                     <div class="column2">
                     </div>
                     <div class="column1">
+                        <div class="blog-search form d-flex search-form">
+                            {{ form_row(form.ref) }}
+                        </div>
                             <div class="form-top">
                                 {{ form_row(form.type) }}
                                 {{ form_row(form.typeBien) }}
@@ -54,6 +57,7 @@
                             <li class="open-1">Neuf</li>
                         {% endif %}
                         <li class="rent">{{ bien.ville.nom }}</li>
+                        <li class="sale">Réf : {{ bien.ref }}</li>
                     </ul>
                     <div class="info-bg">
                         <h5><a href="{{ path('app_biens_show', {'id': bien.id}) }}">{{ bien.nom }}</a></h5>

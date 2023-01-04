@@ -18,7 +18,12 @@ class BiensType extends AbstractType
             ->add('description')
             ->add('pieces')
             ->add('surface')
-            ->add('etat')
+            ->add('etat', ChoiceType::class, [
+                'choices' => [
+                    'Neuf' => 1,
+                    'Occasion' => 0,
+                ],
+            ])
             ->add('etage')
             ->add('chauffage')
             ->add('climatisation')
@@ -29,6 +34,7 @@ class BiensType extends AbstractType
             ->add('maisongardien')
             ->add('eclairageexterieur')
             ->add('nom')
+            ->add('ref')
             ->add('type', ChoiceType::class, [
                 'choices' => [
                     'A Louer' => true,
@@ -36,7 +42,18 @@ class BiensType extends AbstractType
                 ],
             ])
             ->add('neuf')
-            ->add('typeBien')
+            ->add('typeBien', ChoiceType::class, [
+                'choices' => [
+                    'Types Du Bien' => 'Types Du Bien',
+                    'Appartement' => 'Appartement',
+                    'Maison' => 'Maison',
+                    'Terrain' => 'Terrain',
+                    'Commerce' => 'Commerce',
+                    'Garage/Parking' => 'Garage/Parking',
+                    'Immeuble' => 'Immeuble',
+                    'Bureau' => 'Bureau',
+                    'Cave' => 'Cave',
+                ],])
             ->add('prix')
             ->add('ville')
             ->add('photo', FileType::class, [

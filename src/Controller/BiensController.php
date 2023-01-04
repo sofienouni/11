@@ -19,6 +19,7 @@ class BiensController extends AbstractController
     #[Route('/', name: 'app_biens_index', methods: ['GET'])]
     public function index(BiensRepository $biensRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
 
         return $this->render('biens/index.html.twig', [
             'biens' => $biensRepository->findBy(array(),null,10),
@@ -28,6 +29,7 @@ class BiensController extends AbstractController
     #[Route('/new', name: 'app_biens_new', methods: ['GET', 'POST'])]
     public function new(Request $request, BiensRepository $biensRepository, SluggerInterface $slugger, ImagesRepository $imagesRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         $bien = new Biens();
         $form = $this->createForm(BiensType::class, $bien);
         $form->handleRequest($request);
@@ -82,17 +84,19 @@ class BiensController extends AbstractController
     #[Route('/{id}/edit', name: 'app_biens_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Biens $bien, BiensRepository $biensRepository, SluggerInterface $slugger, ImagesRepository $imagesRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         $form = $this->createForm(BiensType::class, $bien);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $previews_images = $imagesRepository->findBy(
-                ['bien' => $bien]
-            );
-            foreach ($previews_images as $previews_image)
-                $imagesRepository->remove($previews_image);
-
             $liste_images = $form->get('photo')->getData();
+            if (!empty($liste_images)){
+                $previews_images = $imagesRepository->findBy(
+                    ['bien' => $bien]
+                );
+                foreach ($previews_images as $previews_image)
+                    $imagesRepository->remove($previews_image);
+            }
             foreach ($liste_images as $images){
                 if ($images) {
                     $originalFilename = pathinfo($images->getClientOriginalName(), PATHINFO_FILENAME);
@@ -132,6 +136,7 @@ class BiensController extends AbstractController
     #[Route('/{id}', name: 'app_biens_delete', methods: ['POST'])]
     public function delete(Request $request, Biens $bien, BiensRepository $biensRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         if ($this->isCsrfTokenValid('delete'.$bien->getId(), $request->request->get('_token'))) {
             $biensRepository->remove($bien, true);
         }

@@ -10,6 +10,11 @@
                 {{ form_row(form._token) }}
                 <div class="modal-body" style="padding-left: 4rem;padding-right: 4rem;">
                     <div class="form-group">
+                        <label>Référence</label>
+                        {{ form_widget(form.ref,{ 'attr': {'style': 'float: right;'} }) }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
                         <label>{{ form_label(form.nom) }}</label>
                         {{ form_widget(form.nom,{ 'attr': {'style': 'float: right;'} }) }}
                     </div>
@@ -21,7 +26,7 @@
                     <hr>
                     <div class="form-group">
                         <label>{{ form_label(form.pieces) }}</label>
-                        {{ form_widget(form.pieces,{ 'attr': {'style': 'float: right;'} }) }}
+                        {{ form_widget(form.pieces,{ 'type':'number','attr': {'style': 'float: right;'} }) }}
                     </div>
                     <hr>
                     <div class="form-group">
@@ -36,7 +41,7 @@
                     <hr>
                     <div class="form-group">
                         <label>{{ form_label(form.etage) }}</label>
-                        {{ form_widget(form.etage,{ 'attr': {'style': 'float: right;'} }) }}
+                        {{ form_widget(form.etage,{ 'type':'number', 'attr': {'style': 'float: right;'} }) }}
                     </div>
                     <hr>
                     <div class="form-group">

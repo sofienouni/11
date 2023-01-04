@@ -73,6 +73,12 @@ class BiensearchParamsType extends AbstractType
                     '200 - 300' => '5',
                     '300+' => '6',
                 ],])
+            ->add('ref', null, [
+                'attr' => array(
+                    'placeholder' => 'Référence',
+                ),
+                'label' => false
+            ])
             ->add('neuf', ChoiceType::class, [
                 'label' => false,
                 'choices' => [

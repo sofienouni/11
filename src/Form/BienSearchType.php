@@ -41,6 +41,12 @@ class BienSearchType extends AbstractType
                 'class' => Villes::class,
 
             ])
+            ->add('ref', null, [
+                'attr' => array(
+                    'placeholder' => 'Référence',
+                ),
+                'label' => false
+            ])
             ->add('prix', ChoiceType::class, [
                 'label' => false,
                 'choices' => [

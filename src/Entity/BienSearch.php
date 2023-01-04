@@ -16,6 +16,8 @@ class BienSearch
 
     private ?string $prix = null;
 
+    private ?string $ref = null;
+
 
     public function getType(): ?string
     {
@@ -61,6 +63,18 @@ class BienSearch
     public function setPrix(?string $prix): self
     {
         $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function getRef(): ?string
+    {
+        return $this->ref;
+    }
+
+    public function setRef(?string $ref): self
+    {
+        $this->ref = $ref;
 
         return $this;
     }

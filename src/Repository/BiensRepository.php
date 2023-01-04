@@ -71,6 +71,7 @@ class BiensRepository extends ServiceEntityRepository
                 }
 
             }
+            $ref = $values->getRef();
         }
 
 
@@ -92,6 +93,9 @@ class BiensRepository extends ServiceEntityRepository
                 if (isset($matches[0][1])) {
                     $criteria->Andwhere($expressionBuilder->lte('prix', $prix_max));
                 }
+            }
+            if ($ref != null){
+                $criteria->Andwhere($expressionBuilder->eq('ref', $ref));
             }
         }
         $queryBuilder->addCriteria($criteria);
@@ -116,7 +120,7 @@ class BiensRepository extends ServiceEntityRepository
             }
             $typeBien = $values->getTypeBien();
             $ville = $values->getVille();
-            if ($ville != 'Choisir une ville') {
+            if ($ville != 'Choisir une ville' && $ville != null) {
                 $ville_id = $villes = $this->getEntityManager()->getRepository(Villes::class)->findOneBy(['nom' => $ville]);
                 $ville_id = $ville_id->getId();
             }
@@ -157,6 +161,7 @@ class BiensRepository extends ServiceEntityRepository
                 }
             }
             $neuf = $values->getNeuf();
+            $ref = $values->getRef();
         }
 
         $queryBuilder = $this->createQueryBuilder('b');
@@ -167,7 +172,7 @@ class BiensRepository extends ServiceEntityRepository
             if ($typeBien != 'Types Du Bien') {
                 $criteria->Andwhere($expressionBuilder->eq('typeBien', $typeBien));
             }
-            if ($ville != 'Choisir une ville') {
+            if ($ville != 'Choisir une ville' && $ville != null) {
                 $criteria->Andwhere($expressionBuilder->eq('ville', $ville_id));
             }
             if ($prix != 'Prix/DT') {
@@ -188,6 +193,9 @@ class BiensRepository extends ServiceEntityRepository
             }
             if ($neuf != 'Bien neuf') {
                 $criteria->Andwhere($expressionBuilder->eq('neuf', $neuf));
+            }
+            if ($ref != null){
+                $criteria->Andwhere($expressionBuilder->eq('ref', $ref));
             }
         }
         $queryBuilder->addCriteria($criteria);

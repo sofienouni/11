@@ -32,6 +32,9 @@ class Messages
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $ref = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $treated = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +108,18 @@ class Messages
     public function setRef(?string $ref): self
     {
         $this->ref = $ref;
+
+        return $this;
+    }
+
+    public function getTreated(): ?\DateTimeImmutable
+    {
+        return $this->treated;
+    }
+
+    public function setTreated(?\DateTimeImmutable $treated): self
+    {
+        $this->treated = $treated;
 
         return $this;
     }

@@ -22,6 +22,8 @@ class BiensearchParams
 
     private ?string $neuf = null;
 
+    private ?string $ref = null;
+
 
     public function getType(): ?string
     {
@@ -103,6 +105,18 @@ class BiensearchParams
     public function setNeuf(?string $neuf): self
     {
         $this->neuf = $neuf;
+
+        return $this;
+    }
+
+    public function getRef(): ?string
+    {
+        return $this->ref;
+    }
+
+    public function setRef(?string $ref): self
+    {
+        $this->ref = $ref;
 
         return $this;
     }
