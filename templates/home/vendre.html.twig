@@ -73,7 +73,35 @@
                             <p class="mt-3">Notre expertise marketing permet de diffuser votre bien sur les principaux portails immobiliers, sur nos newsletters ciblés et sur nos vitrines au coeur de nos agences de Tunis.</p>
                             <p class="mt-3"> Notre expertise sur la législation tunisienne vous assistera pour les démarches administratives. Notre équipe est polyglotte et vous aidera au mieux à réussir à vendre votre bien.</p>
                             <hr>
-                            <a href="{{ path('app_contact') }}" type="submit" class="btn btn-theme3">Vendre</a>
+                            {{ form_start(form) }}
+                                <div class="form-group">
+                                    {{ form_row(form.nom,{ 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_row(form.prenom,{ 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_row(form.email,{ 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_row(form.telephone,{ 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_row(form.type,{ 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_row(form.ville,{ 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_row(form.message,{ 'attr': {'class': 'form-control'} }) }}
+                                </div>
+
+{#                                            <button type="submit" class="btn">Submit</button>#}
+                                    <hr>
+                                    <button type="submit" class="btn btn-success">Envoyer</button>
+
+                            {{ form_end(form) }}
+{#                            <a href="{{ path('app_contact') }}" type="submit" class="btn btn-theme3">Vendre</a>#}
                         </div>
                     </div>
                 </div>

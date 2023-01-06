@@ -5,12 +5,15 @@ namespace App\Controller;
 use App\Entity\BienSearch;
 use App\Entity\BiensearchParams;
 use App\Entity\Messages;
+use App\Entity\Ventes;
 use App\Entity\Villes;
 use App\Form\BiensearchParamsType;
 use App\Form\BienSearchType;
 use App\Form\MessagesType;
+use App\Form\VentesType;
 use App\Repository\BiensRepository;
 use App\Repository\MessagesRepository;
+use App\Repository\VentesRepository;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Doctrine\ORM\EntityManagerInterface;
@@ -160,30 +163,23 @@ class HomeController extends AbstractController
     }
 
     #[Route('/vendre', name: 'app_vendre')]
-    public function vendre(BiensRepository $biensRepository, Request $request): Response
+    public function vendre(VentesRepository $ventesRepository, Request $request): Response
     {
 
-        $villes = $this->manager->getRepository(Villes::class)->findAll();
-        $biensearch = new BiensearchParams();
-        $form = $this->createForm(BiensearchParamsType::class, $biensearch);
+        $vente = new Ventes();
+        $form = $this->createForm(VentesType::class, $vente);
         $form->handleRequest($request);
-        $SearchParams = null;
         if ($form->isSubmitted() && $form->isValid()) {
-            $SearchParams = $form->getData();
-        }
-        $vente = 1;
 
-        $queryBuilder = $biensRepository->findAllFieldPaginatedwithparams($SearchParams,$vente);
-        $adapter = new QueryAdapter($queryBuilder);
-        $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
-            $adapter,
-            $request->query->get('page', 1),
-            9
-        );
+            $now = new \DateTime();
+            $vente->setDate($now);
+            $ventesRepository->save($vente, true);
+            return $this->redirectToRoute('app_vendre', [], Response::HTTP_SEE_OTHER);
+        }
+
+
         return $this->render('home/vendre.html.twig', [
-            'villes' => $villes,
             'form' => $form->createView(),
-            'pager' => $pagerfanta,
         ]);
     }
 }

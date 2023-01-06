@@ -7,6 +7,7 @@ use App\Entity\Images;
 use App\Form\BiensType;
 use App\Repository\BiensRepository;
 use App\Repository\ImagesRepository;
+use App\Repository\VentesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,16 @@ class BiensController extends AbstractController
 
         return $this->render('biens/index.html.twig', [
             'biens' => $biensRepository->findBy(array(),null,10),
+        ]);
+    }
+
+    #[Route('/vente', name: 'app_ventes_index', methods: ['GET'])]
+    public function ventes_index(VentesRepository $ventesRepository): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+
+        return $this->render('biens/ventes_index.html.twig', [
+            'ventes' => $ventesRepository->findBy(array(),null,10),
         ]);
     }
 

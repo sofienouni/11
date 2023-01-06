@@ -70,7 +70,7 @@ class Biens
     #[ORM\Column(nullable: true)]
     private ?float $prix = null;
 
-    #[ORM\OneToMany(mappedBy: 'bien', targetEntity: Images::class)]
+    #[ORM\OneToMany(mappedBy: 'bien', targetEntity: Images::class,  cascade:["remove"] )]
     private Collection $images;
 
     #[ORM\Column(nullable: true)]
