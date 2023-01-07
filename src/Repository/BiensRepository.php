@@ -75,7 +75,7 @@ class BiensRepository extends ServiceEntityRepository
         }
 
 
-        $queryBuilder = $this->createQueryBuilder('b');
+        $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.id','desc');
         $expressionBuilder = Criteria::expr();
         $criteria = new Criteria();
         if ($values != null) {
@@ -164,7 +164,7 @@ class BiensRepository extends ServiceEntityRepository
             $ref = $values->getRef();
         }
 
-        $queryBuilder = $this->createQueryBuilder('b');
+        $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.id','desc');
         $expressionBuilder = Criteria::expr();
         $criteria = new Criteria();
         $criteria->where($expressionBuilder->eq('type', $type));

@@ -46,6 +46,7 @@ class VentesRepository extends ServiceEntityRepository
     public function findForPager(): QueryBuilder
     {
         return $this->createQueryBuilder('v')
+            ->orderBy('v.id','desc')
         ;
     }
 

@@ -36,7 +36,9 @@ class BiensType extends AbstractType
             ->add('maisongardien')
             ->add('eclairageexterieur')
             ->add('nom')
-            ->add('ref')
+            ->add('ref', null, [
+                'required'   => true,
+            ])
             ->add('type', ChoiceType::class, [
                 'choices' => [
                     'A Louer' => true,

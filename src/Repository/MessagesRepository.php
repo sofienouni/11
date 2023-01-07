@@ -45,7 +45,7 @@ class MessagesRepository extends ServiceEntityRepository
      */
     public function findForPager(): QueryBuilder
     {
-        return $this->createQueryBuilder('m')
+        return $this->createQueryBuilder('m')->orderBy('m.id','desc')
         ;
     }
 
