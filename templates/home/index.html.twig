@@ -42,8 +42,13 @@
         <div class="container py-md-3">
             <div class="row mt-5 pt-3">
             {% for bien in pager %}
+                {% set image = bien.images | first %}
                 <div class="grids4-info  col-lg-4 col-md-6">
-                    <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/g7.jpg") }}" class="img-fluid" alt=""></a>
+                    {% if image.url is defined %}
+                        <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/" ~ image.url) }}" style="height: 254px;width: 350px" width="350" height="254" class="img-fluid" alt=""></a>
+                    {% else %}
+                        <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/g7.jpg") }}" style="height: 254px;width: 350px" class="img-fluid" alt=""></a>
+                    {% endif %}
                     <ul class="location-top">
                         {% if bien.type ==1 %}
                             <li class="rent">A Louer</li>
@@ -53,12 +58,13 @@
                         {% if bien.neuf ==1 %}
                             <li class="open-1">Neuf</li>
                         {% endif %}
-                        <li class="rent">{{ bien.ville.nom }}</li>
+
                         <li class="sale">Réf : {{ bien.ref }}</li>
                     </ul>
                     <div class="info-bg">
                         <h5><a href="{{ path('app_biens_show', {'id': bien.id}) }}">{{ bien.nom }}</a></h5>
                         <p>{{ bien.prix}}  DT</p>
+                        <p class="rent">{{ bien.ville.nom }}</p>
                         <ul>
                             <li><span class="fa fa-bed"></span> {{ bien.pieces }} chambres</li>
                             <li><span class="fa fa-home"></span>{{ bien.etat }}</li>
