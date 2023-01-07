@@ -17,24 +17,28 @@ class VentesType extends AbstractType
                 'attr' => array(
                     'placeholder' => 'Nom',
                 ),
+                'required'   => true,
                 'label' => false
             ])
             ->add('prenom', null, [
                 'attr' => array(
                     'placeholder' => 'Prénom',
                 ),
+                'required'   => true,
                 'label' => false
             ])
             ->add('email', null, [
                 'attr' => array(
                     'placeholder' => 'Email',
                 ),
+                'required'   => true,
                 'label' => false
             ])
             ->add('telephone', null, [
                 'attr' => array(
                     'placeholder' => 'Téléphone',
                 ),
+                'required'   => true,
                 'label' => false
             ])
             ->add('type', ChoiceType::class, [

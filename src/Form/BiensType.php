@@ -20,8 +20,10 @@ class BiensType extends AbstractType
             ->add('surface')
             ->add('etat', ChoiceType::class, [
                 'choices' => [
-                    'Neuf' => 1,
-                    'Occasion' => 0,
+                    'Exellent Etat' => 'Exellent Etat',
+                    'Bon Etat' => 'Bon Etat',
+                    'Etat Moyen' => 'Etat Moyen',
+                    'Mauvais Etat' => 'Mauvais Etat',
                 ],
             ])
             ->add('etage')
