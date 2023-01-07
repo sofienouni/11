@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Ventes;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,20 +40,14 @@ class VentesRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Ventes[] Returns an array of Ventes objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('v.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Ventes[] Returns an array of Ventes objects
+     */
+    public function findForPager(): QueryBuilder
+    {
+        return $this->createQueryBuilder('v')
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Ventes
 //    {

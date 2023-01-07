@@ -1,6 +1,6 @@
 {% extends 'base_bien.html.twig' %}
 
-{% block title %}Liste des Biens{% endblock %}
+{% block title %}Liste des Proposition Clients{% endblock %}
 
 {% block body %}
     <style>
@@ -260,47 +260,39 @@
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6" style="display: flex">
-                            <h2>Liste des <b>Biens</b></h2>
-                            <a style="float: right" class="btn btn-success" href="{{ path('app_biens_new') }}">Ajouter Un Bien</a>
+                            <h2>Liste des <b>Proposition</b></h2>
+{#                            <a style="float: right" class="btn btn-success" href="{{ path('app_biens_new') }}">Ajouter Un Bien</a>#}
                         </div>
                     </div>
                 </div>
                 <table class="table table-striped table-hover">
                     <thead>
                     <tr>
-                        <th>Référence</th>
                         <th>Nom</th>
-                        <th>Description</th>
-                        <th>Pieces</th>
-                        <th>Surface</th>
-                        <th>Etat</th>
-                        <th>Type</th>
-                        <th>Neuf</th>
-                        <th>TypeBien</th>
-                        <th>Prix</th>
+                        <th>Prenom</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Message</th>
+                        <th>Réference</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for bien in pager %}
+                    {% for message in messages %}
                         <tr>
-                            <td>{{ bien.ref }}</td>
-                            <td>{{ bien.nom }}</td>
-                            <td>{{ bien.description }}</td>
-                            <td>{{ bien.pieces }}</td>
-                            <td>{{ bien.surface }}</td>
-                            <td>{{ bien.etat }}</td>
-                            <td>{{ bien.type ? 'A Louer' : 'A Vendre' }}</td>
-                            <td>{{ bien.type ? 'Neuf' : 'Non' }}</td>
-                            <td>{{ bien.typeBien }}</td>
-                            <td>{{ bien.prix }}</td>
+                            <td>{{ message.nom }}</td>
+                            <td>{{ message.prenom }}</td>
+                            <td>{{ message.email }}</td>
+                            <td>{{ message.telephone }}</td>
+                            <td>{{ message.message }}</td>
+                            <td>{{ message.ref }}</td>
 
-                            <td>
-                                <a href="{{ path('app_biens_edit', {'id': bien.id}) }}" class="edit"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                {{ include('biens/_delete_form.html.twig', {'button_label': 'Update'}) }}
-                            </td>
+{#                            <td>#}
+{#                                <a href="{{ path('app_biens_edit', {'id': bien.id}) }}" class="edit"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>#}
+{#                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>#}
+{#                            </td>#}
                         </tr>
                     {% endfor %}
-                    {{ pagerfanta(pager) }}
+                    {{ pagerfanta(messages) }}
                     </tbody>
                 </table>
             </div>

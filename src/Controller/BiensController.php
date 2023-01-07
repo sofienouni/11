@@ -7,7 +7,10 @@ use App\Entity\Images;
 use App\Form\BiensType;
 use App\Repository\BiensRepository;
 use App\Repository\ImagesRepository;
+use App\Repository\MessagesRepository;
 use App\Repository\VentesRepository;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,22 +21,51 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class BiensController extends AbstractController
 {
     #[Route('/', name: 'app_biens_index', methods: ['GET'])]
-    public function index(BiensRepository $biensRepository): Response
+    public function index(BiensRepository $biensRepository, Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
 
+        $queryBuilder = $biensRepository->findAllFieldPaginated();
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
+            $adapter,
+            $request->query->get('page', 1),
+            10
+        );
         return $this->render('biens/index.html.twig', [
-            'biens' => $biensRepository->findBy(array(),null,10),
+            'pager' => $pagerfanta,
         ]);
     }
 
     #[Route('/vente', name: 'app_ventes_index', methods: ['GET'])]
-    public function ventes_index(VentesRepository $ventesRepository): Response
+    public function ventes_index(VentesRepository $ventesRepository, Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
+        $queryBuilder = $ventesRepository->findForPager();
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
+            $adapter,
+            $request->query->get('page', 1),
+            10
+        );
         return $this->render('biens/ventes_index.html.twig', [
-            'ventes' => $ventesRepository->findBy(array(),null,10),
+            'ventes' => $pagerfanta,
+        ]);
+    }
+
+    #[Route('/message', name: 'app_messages_index', methods: ['GET'])]
+    public function messages_index(MessagesRepository $messagesRepository, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $queryBuilder = $messagesRepository->findForPager();
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
+            $adapter,
+            $request->query->get('page', 1),
+            10
+        );
+        return $this->render('biens/messages_index.html.twig', [
+            'messages' => $pagerfanta,
         ]);
     }
 

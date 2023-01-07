@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Messages;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,20 +40,14 @@ class MessagesRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Messages[] Returns an array of Messages objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Messages[] Returns an array of Messages objects
+     */
+    public function findForPager(): QueryBuilder
+    {
+        return $this->createQueryBuilder('m')
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Messages
 //    {
