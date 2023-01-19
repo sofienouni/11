@@ -176,7 +176,7 @@ class BiensController extends AbstractController
             }
 
 
-            return $this->redirectToRoute('app_biens_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_program_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('biens/new.html.twig', [
