@@ -101,10 +101,10 @@
                         <label>{{ form_label(form.typeBien) }}</label>
                         {{ form_widget(form.typeBien,{ 'attr': {'style': 'float: right;'} }) }}
                     </div>
-                    {% if programme is defined %}
+                    {% if programme|default %}
                     {% else %}
                         <hr>
-                        <div class="form-group">
+                        <div class="form-group 5">
                             <label>{{ form_label(form.prix) }}</label>
                             {{ form_widget(form.prix,{ 'attr': {'style': 'float: right;'} }) }}
                         </div>
@@ -133,7 +133,11 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success">{{ button_label|default('Save') }}</button>
-                    <a href="{{ path('app_biens_index') }}" class="btn btn-default" >Annuler</a>
+                    {% if programme|default %}
+                        <a href="{{ path('app_program_index') }}" class="btn btn-default" >Annuler</a>
+                    {% else %}
+                        <a href="{{ path('app_biens_index') }}" class="btn btn-default" >Annuler</a>
+                    {% endif %}
                 </div>
             </form>
         </div>

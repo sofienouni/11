@@ -47,7 +47,6 @@ class ProgramType extends AbstractType
                 'choices' => [
                     'Programme neuf' => 'Programme neuf',
                 ],])
-            ->add('prix')
             ->add('ville')
             ->add('photo', FileType::class, [
                 'label' => 'Images du Bien',
