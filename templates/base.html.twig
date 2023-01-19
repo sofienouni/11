@@ -14,6 +14,9 @@
 
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset("assets/css/style-starter.css") }}">
+            <link rel="stylesheet" href="{{ asset("assets/css/style.css") }}">
+            <link rel="stylesheet" href="{{ asset("assets/css/prism.css") }}">
+            <link rel="stylesheet" href="{{ asset("assets/css/chosen.css") }}">
         {% endblock %}
 
 
@@ -69,7 +72,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_louer') }}">Louer</a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_program_neuf') }}">Programme Neuf</a>
+                        </li>
                         <li class="nav-item mr-0">
                             <a class="nav-link" href="{{ path('app_vendre') }}">Vendre</a>
                         </li>
@@ -113,6 +118,7 @@
                                 <li><a href="{{ path('app_acheter') }}">Acheter</a></li>
                                 <li><a href="{{ path('app_louer') }}">Louer</a></li>
                                 <li><a href="{{ path('app_vendre') }}">Vendre</a></li>
+                                <li><a href="{{ path('app_program_neuf') }}">Programme Neuf</a></li>
                                 <li><a href="{{ path('app_agence') }}">Notre Agence</a></li>
                                 <li><a href="{{ path('app_contact') }}">Contactez Nous</a></li>
                             </ul>
@@ -142,6 +148,8 @@
                     scrollFunction()
                 };
 
+
+
                 function scrollFunction() {
                     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                         document.getElementById("movetop").style.display = "block";
@@ -161,6 +169,10 @@
         {% block javascripts %}
             <!-- // grids block 5 -->
             <script src="{{ asset("assets/js/jquery-3.3.1.min.js") }}"></script>
+            <script src="{{ asset("assets/js/chosen.jquery.js") }}"></script>
+            <script src="{{ asset("assets/js/prism.js") }}"></script>
+            <script src="{{ asset("assets/js/init.js") }}"></script>
+            <script src="chos"></script>
             <!-- //footer-28 block -->
 
             <script>
@@ -175,8 +187,12 @@
                     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
             </script>
 
+
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
                     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+            </script>
+            <script>
+                $('.form-control-chosen').chosen();
             </script>
 
         {% endblock %}

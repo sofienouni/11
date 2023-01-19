@@ -18,7 +18,6 @@
                             <div class="form-top">
                                 {{ form_row(form.type) }}
                                 {{ form_row(form.typeBien) }}
-
                             </div>
                             <div class="form-top">
                                 {{ form_row(form.ville) }}
@@ -63,7 +62,9 @@
                     </ul>
                     <div class="info-bg">
                         <h5><a href="{{ path('app_biens_show', {'id': bien.id}) }}">{{ bien.nom }}</a></h5>
-                        <p>{{ bien.prix}}  DT</p>
+                        {% if bien.prix|default %}
+                            <p>{{ bien.prix}}  DT</p>
+                        {% endif %}
                         <p class="rent">{{ bien.ville.nom }}</p>
                         <ul>
                             <li><span class="fa fa-bed"></span> {{ bien.pieces }} chambres</li>
@@ -78,5 +79,4 @@
         </div>
     </div>
 </section>
-
 {% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base_bien.html.twig' %}
+
+{% block title %}Nouveau{% endblock %}
+
+{% block body %}
+    <h1 style="text-align: center;">Ajouter Une Ville</h1>
+
+    {{ form_start(form) }}
+    <div id="addEmployeeModal" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ bien.nom }}</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    {{ form_row(form._token) }}
+                    <div class="modal-body" style="padding-left: 4rem;padding-right: 4rem;">
+                        <div class="form-group">
+                            <label>Nom de la ville</label>
+                            {{ form_widget(form.nom,{ 'attr': {'style': 'float: right;'} }) }}
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label>Gouvernorat</label>
+                            {{ form_widget(form.pays,{ 'attr': {'style': 'float: right;'} }) }}
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+                        <a href="{{ path('app_biens_index') }}" class="btn btn-default" >Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_biens_index') }}">back to list</a>
+{% endblock %}

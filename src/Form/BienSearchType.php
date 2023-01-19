@@ -24,8 +24,13 @@ class BienSearchType extends AbstractType
                 ],])
             ->add('typeBien', ChoiceType::class, [
                 'label' => false,
+                'multiple' => true,
+                'required' => false,
+                'attr' => array(
+                    'class' => 'chosen-select',
+                ),
                 'choices' => [
-                    'Types Du Bien' => 'Types Du Bien',
+                    'Programme neuf' => 'Programme neuf',
                     'Appartement' => 'Appartement',
                     'Maison' => 'Maison',
                     'Terrain' => 'Terrain',
@@ -38,7 +43,13 @@ class BienSearchType extends AbstractType
             ->add('ville', EntityType::class, [
                 'placeholder' => 'Choisir une ville',
                 'label' => false,
+                'attr' => array(
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Choisir une ville',
+                ),
                 'class' => Villes::class,
+                'multiple' => true,
+                'required' => false
 
             ])
             ->add('ref', null, [

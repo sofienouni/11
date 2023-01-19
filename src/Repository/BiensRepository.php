@@ -45,7 +45,7 @@ class BiensRepository extends ServiceEntityRepository
     /**
      * @return Biens[] Returns an array of Biens objects
      */
-    public function findAllFieldPaginated($values = null): QueryBuilder
+    public function findAllFieldPaginated($values = null, $program = null): QueryBuilder
     {
         if ($values != null) {
             $type = $values->getType();
@@ -55,10 +55,11 @@ class BiensRepository extends ServiceEntityRepository
                 $type = 0;
             }
             $typeBien = $values->getTypeBien();
-            $ville = $values->getVille();
-            if ($ville != 'Choisir une ville'){
-                $ville_id = $villes = $this->getEntityManager()->getRepository(Villes::class)->findOneBy(['nom' => $ville]);
-                $ville_id = $ville_id->getId();
+            $villes = $values->getVille();
+            if ($villes != 'Choisir une ville' && !empty($villes)){
+                foreach ($villes as $ville) {
+                    $ville_id[] = $ville->getId();
+                }
             }
             $prix = $values->getPrix();
             if ($prix != 'Prix/DT'){
@@ -82,11 +83,12 @@ class BiensRepository extends ServiceEntityRepository
             if ($type == 1 || $type == 0){
                 $criteria->where($expressionBuilder->eq('type', $type));
             }
-            if ($typeBien != 'Types Du Bien') {
-                $criteria->Andwhere($expressionBuilder->eq('typeBien', $typeBien));
+            if ($typeBien != 'Types Du Bien' && !empty($typeBien)) {
+                $criteria->Andwhere($expressionBuilder->in('typeBien', $typeBien));
             }
-            if ($ville != 'Choisir une ville') {
-                $criteria->Andwhere($expressionBuilder->eq('ville', $ville_id));
+
+            if ($villes != 'Choisir une ville' && !empty($villes)) {
+                $criteria->Andwhere($expressionBuilder->in('ville', $ville_id));
             }
             if ($prix != 'Prix/DT') {
                 $criteria->Andwhere($expressionBuilder->gte('prix', $prix_min));
@@ -97,7 +99,14 @@ class BiensRepository extends ServiceEntityRepository
             if ($ref != null){
                 $criteria->Andwhere($expressionBuilder->eq('ref', $ref));
             }
+        }else {
+            if ($program == true){
+                $criteria->Andwhere($expressionBuilder->eq('typeBien', 'Programme neuf'));
+            }else{
+                $criteria->Andwhere($expressionBuilder->neq('typeBien', 'Programme neuf'));
+            }
         }
+
         $queryBuilder->addCriteria($criteria);
 //        dd($queryBuilder);
 
@@ -119,10 +128,11 @@ class BiensRepository extends ServiceEntityRepository
                 $type = 0;
             }
             $typeBien = $values->getTypeBien();
-            $ville = $values->getVille();
-            if ($ville != 'Choisir une ville' && $ville != null) {
-                $ville_id = $villes = $this->getEntityManager()->getRepository(Villes::class)->findOneBy(['nom' => $ville]);
-                $ville_id = $ville_id->getId();
+            $villes = $values->getVille();
+            if ($villes != 'Choisir une ville' && !empty($villes)){
+                foreach ($villes as $ville) {
+                    $ville_id[] = $ville->getId();
+                }
             }
             $prix = $values->getPrix();
             if ($prix != 'Prix/DT') {
@@ -169,11 +179,11 @@ class BiensRepository extends ServiceEntityRepository
         $criteria = new Criteria();
         $criteria->where($expressionBuilder->eq('type', $type));
         if ($values != null) {
-            if ($typeBien != 'Types Du Bien') {
-                $criteria->Andwhere($expressionBuilder->eq('typeBien', $typeBien));
+            if ($typeBien != 'Types Du Bien' && !empty($typeBien)) {
+                $criteria->Andwhere($expressionBuilder->in('typeBien', $typeBien));
             }
-            if ($ville != 'Choisir une ville' && $ville != null) {
-                $criteria->Andwhere($expressionBuilder->eq('ville', $ville_id));
+            if ($villes != 'Choisir une ville' && !empty($villes)) {
+                $criteria->Andwhere($expressionBuilder->in('ville', $ville_id));
             }
             if ($prix != 'Prix/DT') {
                 $criteria->Andwhere($expressionBuilder->gte('prix', $prix_min));

@@ -10,9 +10,9 @@ class BienSearch
 
     private ?string $type = null;
 
-    private ?string $typeBien = null;
+    private ?array $typeBien = [];
 
-    private ?string $ville = null;
+    private ?array $ville = [];
 
     private ?string $prix = null;
 
@@ -31,24 +31,27 @@ class BienSearch
         return $this;
     }
 
-    public function getTypeBien(): ?string
+    public function getTypeBien(): ?array
     {
-        return $this->typeBien;
+        $typeBien = $this->typeBien;
+        return array_unique($typeBien);
     }
 
-    public function setTypeBien(?string $typeBien): self
+    public function setTypeBien(?array $typeBien): self
     {
         $this->typeBien = $typeBien;
 
         return $this;
     }
 
-    public function getVille(): ?string
+    public function getVille(): ?array
     {
-        return $this->ville;
+
+        $ville = $this->ville;
+        return array_unique($ville);
     }
 
-    public function setVille(?string $ville): self
+    public function setVille(?array $ville): self
     {
         $this->ville = $ville;
 

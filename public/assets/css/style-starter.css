@@ -10478,6 +10478,23 @@ h4.sub-title {
   font-weight: normal;
   font-style: normal; }
 
+.chosen-container {
+  margin-top: 15px;
+  width: 100%;
+  height: 45px;
+  background: #fff;
+  color: #686868;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 45px;
+  -webkit-appearance: none;
+  cursor: pointer;
+  background-image: url(../images/down.png);
+  background-repeat: no-repeat;
+  background-position: 93% 52%;
+  outline: none;
+}
 .form-12 select {
   margin-top: 15px;
   width: 100%;

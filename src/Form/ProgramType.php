@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
-class BiensType extends AbstractType
+class ProgramType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -39,27 +39,13 @@ class BiensType extends AbstractType
             ->add('ref', null, [
                 'required'   => true,
             ])
-            ->add('type', ChoiceType::class, [
-                'choices' => [
-                    'A Louer' => true,
-                    'A Vendre' => false,
-                ],
-            ])
             ->add('neuf')
             ->add('typeBien', ChoiceType::class, [
                 'attr' => array(
                     'class' => 'chosen-select',
-                    'data-placeholder' => 'Type Du Bien',
                 ),
                 'choices' => [
-                    'Appartement' => 'Appartement',
-                    'Maison' => 'Maison',
-                    'Terrain' => 'Terrain',
-                    'Commerce' => 'Commerce',
-                    'Garage/Parking' => 'Garage/Parking',
-                    'Immeuble' => 'Immeuble',
-                    'Bureau' => 'Bureau',
-                    'Cave' => 'Cave',
+                    'Programme neuf' => 'Programme neuf',
                 ],])
             ->add('prix')
             ->add('ville')

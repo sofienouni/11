@@ -70,24 +70,27 @@
                     </div>
                     <hr>
                     <div class="form-group">
-                        <label>{{ form_label(form.cideosurveillance) }}</label>
+                        <label>Vidéo Surveillance</label>
                         {{ form_widget(form.cideosurveillance,{ 'attr': {'style': 'float: right;'} }) }}
                     </div>
                     <hr>
                     <div class="form-group">
-                        <label>{{ form_label(form.maisongardien) }}</label>
+                        <label>Maison De Gardien</label>
                         {{ form_widget(form.maisongardien,{ 'attr': {'style': 'float: right;'} }) }}
                     </div>
                     <hr>
                     <div class="form-group">
-                        <label>{{ form_label(form.eclairageexterieur) }}</label>
+                        <label>Eclairage Exterieur</label>
                         {{ form_widget(form.eclairageexterieur,{ 'attr': {'style': 'float: right;'} }) }}
                     </div>
-                    <hr>
-                    <div class="form-group">
-                        <label>{{ form_label(form.type) }}</label>
-                        {{ form_widget(form.type,{ 'attr': {'style': 'float: right;'} }) }}
-                    </div>
+                    {% if programme is defined %}
+                    {% else %}
+                        <hr>
+                        <div class="form-group">
+                            <label>{{ form_label(form.type) }}</label>
+                            {{ form_widget(form.type,{ 'attr': {'style': 'float: right;'} }) }}
+                        </div>
+                    {% endif %}
                     <hr>
                     <div class="form-group">
                         <label>{{ form_label(form.neuf) }}</label>
@@ -98,11 +101,14 @@
                         <label>{{ form_label(form.typeBien) }}</label>
                         {{ form_widget(form.typeBien,{ 'attr': {'style': 'float: right;'} }) }}
                     </div>
-                    <hr>
-                    <div class="form-group">
-                        <label>{{ form_label(form.prix) }}</label>
-                        {{ form_widget(form.prix,{ 'attr': {'style': 'float: right;'} }) }}
-                    </div>
+                    {% if programme is defined %}
+                    {% else %}
+                        <hr>
+                        <div class="form-group">
+                            <label>{{ form_label(form.prix) }}</label>
+                            {{ form_widget(form.prix,{ 'attr': {'style': 'float: right;'} }) }}
+                        </div>
+                    {% endif %}
                     <hr>
                     <div class="form-group">
                         <label>{{ form_label(form.ville) }}</label>
@@ -127,7 +133,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success">{{ button_label|default('Save') }}</button>
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <a href="{{ path('app_biens_index') }}" class="btn btn-default" >Annuler</a>
                 </div>
             </form>
         </div>

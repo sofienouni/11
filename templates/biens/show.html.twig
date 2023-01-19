@@ -12,11 +12,49 @@
                         <h3>{{ bien.nom }}</h3>
                         <p>{{ bien.description }}</p>
                         <ul class="cont-4">
-                            <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.pieces }} Pièces</li>
-                            <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.surface }} M2 </li>
-                            <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.etage }} Etages</li>
-                            <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.etat }}</li>
-                            <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.typeBien }}</li>
+                            {% if bien.pieces|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.pieces }} Pièces</li>
+                            {% endif %}
+                            {% if bien.surfaces|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.surface }} M2 </li>
+                            {% endif %}
+                            {% if bien.etage|default %}
+                                {% if bien.etage == 1 %}
+                                    <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.etage }} ère Etages</li>
+                                {% else %}
+                                    <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.etage }} ème Etages</li>
+                                {% endif %}
+                            {% endif %}
+                            {% if bien.etat|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.etat }}</li>
+                            {% endif %}
+                            {% if bien.chauffage|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Chauffage</li>
+                            {% endif %}
+                            {% if bien.climatisation|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Climatisation</li>
+                            {% endif %}
+                            {% if bien.ascenceur|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Ascenceur</li>
+                            {% endif %}
+                            {% if bien.concierge|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Concierge</li>
+                            {% endif %}
+                            {% if bien.gardien|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Gardien</li>
+                            {% endif %}
+                            {% if bien.cideosurveillance|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Vidéosurveillance</li>
+                            {% endif %}
+                            {% if bien.maisongardien|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Maison De Gardien</li>
+                            {% endif %}
+                            {% if bien.eclairageexterieur|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Eclairage Extérieur</li>
+                            {% endif %}
+                            {% if bien.typeBien|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.typeBien }}</li>
+                            {% endif %}
                             {% if bien.neuf == true %}
                                 <li><span class="mr-3 fa fa-long-arrow-right"></span>Neuf</li>
                             {% endif %}
@@ -29,13 +67,17 @@
                             <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.ville.nom }}</li>
 
                         </ul>
-                        <a class="btn btn-secondary btn-theme3 mt-3" href="#team"> About Our Team</a>
+                        <a class="btn btn-secondary btn-theme3 mt-3" href="#images"> Plus D'images</a>
                     </div>
                     {% set image = bien.images|first %}
 
                     {% if image.url is defined %}
                         <div class="cwp4-image col-lg-6 pl-lg-5 mt-lg-0 mt-5">
                             <img src="{{ asset("assets/images/"  ~ image.url) }}" class="img-fluid" alt="" />
+                        </div>
+                    {% else %}
+                        <div class="cwp4-image col-lg-6 pl-lg-5 mt-lg-0 mt-5">
+                            <img src="{{ asset("assets/images/pexels-photomix-company-101808.jpg") }}" class="img-fluid" alt="" />
                         </div>
                     {% endif %}
 
@@ -46,8 +88,8 @@
 
     <section class="w3l-team-main-6">
         <!-- /team-grids -->
-        <div class="team-content" id="team" style="padding: 0px;">
-            <div class="container">
+        <div class="team-content" id="images" style="padding: 0px;">
+            <div class="container" style="padding-bottom: 20px;">
                 <div class="d-grid grid-col-4 text-center mt-5 pt-3">
                     {% for image in bien.images %}
                         {% if image is defined %}

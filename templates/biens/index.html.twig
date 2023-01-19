@@ -1,6 +1,13 @@
 {% extends 'base_bien.html.twig' %}
 
-{% block title %}Liste des Biens{% endblock %}
+{% block title %}
+    {% if program|default %}
+        Programmes neuf
+    {% else %}
+        Liste des Biens
+    {% endif %}
+
+{% endblock %}
 
 {% block body %}
     <style>
@@ -259,9 +266,11 @@
             <div class="table-wrapper">
                 <div class="table-title">
                     <div class="row">
-                        <div class="col-sm-6" style="display: flex">
+                        <div class="col-sm-8" style="display: flex">
                             <h2>Liste des <b>Biens</b></h2>
                             <a style="float: right" class="btn btn-success" href="{{ path('app_biens_new') }}">Ajouter Un Bien</a>
+                            <a style="float: right" class="btn btn-success" href="{{ path('app_programme_new') }}">Ajouter Un Programme Neuf</a>
+                            <a style="float: right" class="btn btn-success" href="{{ path('app_ville_new') }}">Ajouter Une Ville</a>
                         </div>
                     </div>
                 </div>
@@ -276,7 +285,7 @@
                         <th>Etat</th>
                         <th>Type</th>
                         <th>Neuf</th>
-                        <th>TypeBien</th>
+                        <th>Type Du Bien</th>
                         <th>Prix</th>
                     </tr>
                     </thead>

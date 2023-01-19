@@ -4,11 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Biens;
 use App\Entity\Images;
+use App\Entity\Villes;
 use App\Form\BiensType;
+use App\Form\ProgramType;
+use App\Form\VilleType;
 use App\Repository\BiensRepository;
 use App\Repository\ImagesRepository;
 use App\Repository\MessagesRepository;
 use App\Repository\VentesRepository;
+use App\Repository\VillesRepository;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,6 +38,24 @@ class BiensController extends AbstractController
         );
         return $this->render('biens/index.html.twig', [
             'pager' => $pagerfanta,
+        ]);
+    }
+
+    #[Route('/program', name: 'app_program_index', methods: ['GET'])]
+    public function program(BiensRepository $biensRepository, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+
+        $queryBuilder = $biensRepository->findAllFieldPaginated(null,true);
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
+            $adapter,
+            $request->query->get('page', 1),
+            10
+        );
+        return $this->render('biens/index.html.twig', [
+            'pager' => $pagerfanta,
+            'program' => true
         ]);
     }
 
@@ -112,6 +134,75 @@ class BiensController extends AbstractController
 
         return $this->renderForm('biens/new.html.twig', [
             'bien' => $bien,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/newProgramme', name: 'app_programme_new', methods: ['GET', 'POST'])]
+    public function newProgramme(Request $request, BiensRepository $biensRepository, SluggerInterface $slugger, ImagesRepository $imagesRepository): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $bien = new Biens();
+        $form = $this->createForm(ProgramType::class, $bien);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $biensRepository->save($bien, true);
+            $liste_images = $form->get('photo')->getData();
+            foreach ($liste_images as $images){
+                if ($images) {
+                    $originalFilename = pathinfo($images->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $images->guessExtension();
+
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $images->move(
+                            $this->getParameter('images_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    $image = new Images();
+                    $image->setUrl($newFilename);
+                    $image->setBien($bien);
+                    $imagesRepository->save($image, true);
+                }
+            }
+
+
+            return $this->redirectToRoute('app_biens_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('biens/new.html.twig', [
+            'programme' => true,
+            'bien' => $bien,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/newVille', name: 'app_ville_new', methods: ['GET', 'POST'])]
+    public function new_ville(Request $request, VillesRepository $villesRepository): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $ville = new Villes();
+        $form = $this->createForm(VilleType::class, $ville);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $villesRepository->save($ville, true);
+
+
+            return $this->redirectToRoute('app_biens_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('biens/new_ville.html.twig', [
+            'bien' => $ville,
             'form' => $form,
         ]);
     }
