@@ -272,6 +272,11 @@ class BiensController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         if ($this->isCsrfTokenValid('delete'.$bien->getId(), $request->request->get('_token'))) {
+            foreach ($bien->getImages() as $image){
+                if (file_exists($this->getParameter('images_directory').'/'.$image->getUrl())){
+                    unlink($this->getParameter('images_directory').'/'.$image->getUrl());
+                }
+            }
             $biensRepository->remove($bien, true);
         }
 
@@ -282,6 +287,11 @@ class BiensController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         if ($this->isCsrfTokenValid('delete'.$bien->getId(), $request->request->get('_token'))) {
+            foreach ($bien->getImages() as $image){
+                if (file_exists($this->getParameter('images_directory').'/'.$image->getUrl())){
+                    unlink($this->getParameter('images_directory').'/'.$image->getUrl());
+                }
+            }
             $biensRepository->remove($bien, true);
         }
 
