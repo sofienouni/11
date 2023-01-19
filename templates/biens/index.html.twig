@@ -305,7 +305,12 @@
 
                             <td>
                                 <a href="{{ path('app_biens_edit', {'id': bien.id}) }}" class="edit"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                {{ include('biens/_delete_form.html.twig', {'button_label': 'Update'}) }}
+                                {% if program|default %}
+                                    {{ include('biens/_delete_program_form.html.twig', {'button_label': 'Update'}) }}
+                                {% else %}
+                                    {{ include('biens/_delete_form.html.twig', {'button_label': 'Update'}) }}
+                                {% endif %}
+
                             </td>
                         </tr>
                     {% endfor %}

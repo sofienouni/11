@@ -277,4 +277,14 @@ class BiensController extends AbstractController
 
         return $this->redirectToRoute('app_biens_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/delete/{id}', name: 'app_program_delete', methods: ['POST'])]
+    public function delete_program(Request $request, Biens $bien, BiensRepository $biensRepository): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        if ($this->isCsrfTokenValid('delete'.$bien->getId(), $request->request->get('_token'))) {
+            $biensRepository->remove($bien, true);
+        }
+
+        return $this->redirectToRoute('app_program_index', [], Response::HTTP_SEE_OTHER);
+    }
 }
