@@ -10,8 +10,11 @@
 
                     <div class="cwp4-text col-lg-6">
                         <h3>{{ bien.nom }}</h3>
-                        <p>{{ bien.description }}</p>
+                        <p>{{ bien.description | raw  }}</p>
                         <ul class="cont-4">
+                            {% if bien.ref|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Référence {{ bien.ref }}</li>
+                            {% endif %}
                             {% if bien.pieces|default %}
                                 <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.pieces }} Pièces</li>
                             {% endif %}
@@ -59,9 +62,9 @@
                                 <li><span class="mr-3 fa fa-long-arrow-right"></span>Neuf</li>
                             {% endif %}
                             {% if bien.type == true %}
-                                {% set type = 'A Vendre' %}
-                            {% else %}
                                 {% set type = 'A Louer' %}
+                            {% else %}
+                                {% set type = 'A Vendre' %}
                             {% endif %}
                             <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ type }}</li>
                             <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.ville.nom }}</li>

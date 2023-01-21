@@ -41,6 +41,12 @@ class VentesType extends AbstractType
                 'required'   => true,
                 'label' => false
             ])
+            ->add('operation', ChoiceType::class, [
+                'choices' => [
+                    'A Louer' => 'A Louer',
+                    'A Vendre' => 'A Vendre',
+                ],
+                'label' => false])
             ->add('type', ChoiceType::class, [
                 'choices' => [
                     'Types Du Bien' => 'Types Du Bien',

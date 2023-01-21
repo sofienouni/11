@@ -45,7 +45,7 @@ class BiensRepository extends ServiceEntityRepository
     /**
      * @return Biens[] Returns an array of Biens objects
      */
-    public function findAllFieldPaginated($values = null, $program = null): QueryBuilder
+    public function findAllFieldPaginated($values = null): QueryBuilder
     {
         if ($values != null) {
             $type = $values->getType();
@@ -98,12 +98,6 @@ class BiensRepository extends ServiceEntityRepository
             }
             if ($ref != null){
                 $criteria->Andwhere($expressionBuilder->eq('ref', $ref));
-            }
-        }else {
-            if ($program == true){
-                $criteria->Andwhere($expressionBuilder->eq('typeBien', 'Programme neuf'));
-            }else{
-                $criteria->Andwhere($expressionBuilder->neq('typeBien', 'Programme neuf'));
             }
         }
 

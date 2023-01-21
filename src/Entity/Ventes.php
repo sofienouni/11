@@ -41,6 +41,9 @@ class Ventes
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $treated = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $operation = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -150,6 +153,18 @@ class Ventes
     public function setTreated(?\DateTimeInterface $treated): self
     {
         $this->treated = $treated;
+
+        return $this;
+    }
+
+    public function getOperation(): ?string
+    {
+        return $this->operation;
+    }
+
+    public function setOperation(?string $operation): self
+    {
+        $this->operation = $operation;
 
         return $this;
     }

@@ -8,8 +8,13 @@
         <div class="apply-info py-5">
             <div class="container py-lg-3">
                 <div class="heading text-center mx-auto">
+                    {% if location|default %}
+                        <h3 class="head text-white">Louer votre appartement ou votre propriété</h3>
+                        <p class="my-3 head ">Vous voulez deposer une annonce? Laissez nous un message et on vous aidera à louer votre biens!</p>
+                    {% else %}
                     <h3 class="head text-white">Vendre votre appartement ou votre propriété à Tunis, Tunisie</h3>
                     <p class="my-3 head "> Nos agences immobilières tunisiennes avec son équipe polyglotte vous aident à mettre en vente ou à mettre en location votre propriété à Tunis et ses alentours.</p>
+                    {% endif %}
                 </div>
                 <div class="apply-grids-info row pt-5 mt-3">
                     <div class="apply-gd-left col-lg-7">
@@ -88,6 +93,15 @@
                                 </div>
                                 <div class="form-group">
                                     {{ form_row(form.type,{ 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            {% if location|default %}
+                                {% set optype = 'A Louer' %}
+                            {% else %}
+                                {% set optype = 'A Vendre' %}
+                            {% endif %}
+
+                                <div class="form-group">
+                                    {{ form_row(form.operation,{ 'attr': {'class': 'form-control'}, 'value' : optype }) }}
                                 </div>
                                 <div class="form-group">
                                     {{ form_row(form.ville,{ 'attr': {'class': 'form-control'} }) }}

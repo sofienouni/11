@@ -30,7 +30,6 @@ class BienSearchType extends AbstractType
                     'class' => 'chosen-select',
                 ),
                 'choices' => [
-                    'Programme neuf' => 'Programme neuf',
                     'Appartement' => 'Appartement',
                     'Maison' => 'Maison',
                     'Terrain' => 'Terrain',

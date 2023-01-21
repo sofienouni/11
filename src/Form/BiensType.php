@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Biens;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -15,7 +16,7 @@ class BiensType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('description')
+            ->add('description',CKEditorType::class)
             ->add('pieces')
             ->add('surface')
             ->add('etat', ChoiceType::class, [

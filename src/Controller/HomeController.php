@@ -61,32 +61,6 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/program_neuf', name: 'app_program_neuf')]
-    public function programNeuf(BiensRepository $biensRepository, Request $request): Response
-    {
-
-        $villes = $this->manager->getRepository(Villes::class)->findAll();
-        $biensearch = new BienSearch();
-        $form = $this->createForm(BienSearchType::class, $biensearch);
-        $form->handleRequest($request);
-        $SearchParams = null;
-        if ($form->isSubmitted() && $form->isValid()) {
-            $SearchParams = $form->getData();
-        }
-        $queryBuilder = $biensRepository->findAllFieldPaginated($SearchParams,true);
-        $adapter = new QueryAdapter($queryBuilder);
-        $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
-            $adapter,
-            $request->query->get('page', 1),
-            9
-        );
-
-        return $this->render('home/index.html.twig', [
-            'villes' => $villes,
-            'form' => $form->createView(),
-            'pager' => $pagerfanta,
-        ]);
-    }
 
     #[Route('/acheter', name: 'app_acheter')]
     public function acheter(BiensRepository $biensRepository, Request $request): Response
@@ -207,6 +181,28 @@ class HomeController extends AbstractController
 
         return $this->render('home/vendre.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/annonce', name: 'app_annonce')]
+    public function annonce(VentesRepository $ventesRepository, Request $request): Response
+    {
+
+        $vente = new Ventes();
+        $form = $this->createForm(VentesType::class, $vente);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $now = new \DateTime();
+            $vente->setDate($now);
+            $ventesRepository->save($vente, true);
+            return $this->redirectToRoute('app_vendre', [], Response::HTTP_SEE_OTHER);
+        }
+
+
+        return $this->render('home/vendre.html.twig', [
+            'form' => $form->createView(),
+            'location' => true
         ]);
     }
 }

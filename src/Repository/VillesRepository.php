@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Villes;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,20 +40,13 @@ class VillesRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Villes[] Returns an array of Villes objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('v.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Villes[] Returns an array of Villes objects
+     */
+    public function findAllFieldPaginated(): QueryBuilder
+    {
+        return $this->createQueryBuilder('m')->orderBy('m.id','desc');
+    }
 
 //    public function findOneBySomeField($value): ?Villes
 //    {
