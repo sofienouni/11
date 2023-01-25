@@ -208,13 +208,20 @@ class BiensRepository extends ServiceEntityRepository
 
     }
 
-//    public function findOneBySomeField($value): ?Biens
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @return Biens[] Returns an array of Images objects
+     */
+    public function findByExampleField($value = null): array
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.typeBien = :val')
+            ->andWhere('b.type = :val1')
+            ->setParameter('val', $value['type_bien'])
+            ->setParameter('val1',$value['type'])
+            ->orderBy('b.id', 'DESC')
+            ->setMaxResults(6)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

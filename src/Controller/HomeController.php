@@ -45,8 +45,37 @@ class HomeController extends AbstractController
         $SearchParams = null;
         if ($form->isSubmitted() && $form->isValid()) {
             $SearchParams = $form->getData();
+            $queryBuilder = $biensRepository->findAllFieldPaginated($SearchParams);
+        }else{
+            $vente = [];
+            $location = [];
+            $value['type'] = 0;
+            $value['type_bien'] = 'Appartement';
+            $vente['Appartement'] = $biensRepository->findByExampleField($value);
+            $value['type'] = 1;
+            $location['Appartement'] = $biensRepository->findByExampleField($value);
+            $value['type'] = 0;
+            $value['type_bien'] = 'Villa';
+            $vente['Villa'] = $biensRepository->findByExampleField($value);
+            $value['type'] = 1;
+            $location['Villa'] = $biensRepository->findByExampleField($value);
+            $value['type'] = 0;
+            $value['type_bien'] = 'Terrain';
+            $vente['Terrain'] = $biensRepository->findByExampleField($value);
+            $value['type'] = 1;
+            $location['Terrain'] = $biensRepository->findByExampleField($value);
+            $value['type'] = 0;
+            $value['type_bien'] = 'Commerce';
+            $vente['Commerce'] = $biensRepository->findByExampleField($value);
+            $value['type'] = 1;
+            $location['Commerce'] = $biensRepository->findByExampleField($value);
+            return $this->render('home/selection.html.twig', [
+                'ventes' => $vente,
+                'location' => $location,
+                'form' => $form->createView(),
+            ]);
         }
-        $queryBuilder = $biensRepository->findAllFieldPaginated($SearchParams);
+
         $adapter = new QueryAdapter($queryBuilder);
         $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
             $adapter,

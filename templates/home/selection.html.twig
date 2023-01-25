@@ -1,0 +1,395 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}11.tn!{% endblock %}
+
+{% block body %}
+
+    <section class="form-12" id="home">
+        {{ form_start(form) }}
+        <div class="form-12-content">
+            <div class="container">
+                <div class="grid grid-column-2 ">
+                    <div class="column2">
+                    </div>
+                    <div class="column1">
+                        <div class="blog-search form d-flex search-form">
+                            {{ form_row(form.ref) }}
+                        </div>
+                            <div class="form-top">
+                                {{ form_row(form.type) }}
+                                {{ form_row(form.typeBien) }}
+                            </div>
+                            <div class="form-top">
+                                {{ form_row(form.ville) }}
+                                {{ form_row(form.prix) }}
+                            </div>
+                            <div class="form-top">
+
+                            </div>
+                            <button type="submit" class="btn">Submit</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </section>
+
+
+<section class="grids-4" id="properties">
+    <div id="grids4-block" class="py-5">
+        <ul class="nav nav-tabs" id="myTab" role="tablist" style="justify-content: center;">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="vente-tab" data-bs-toggle="tab" data-bs-target="#vente" type="button" role="tab" aria-controls="vente" aria-selected="true">Ventes</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="location-tab" data-bs-toggle="tab" data-bs-target="#location" type="button" role="tab" aria-controls="location" aria-selected="false">Location</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="vente" role="tabpanel" aria-labelledby="vente-tab"  style="justify-content: center;">
+                <ul class="nav nav-tabs" id="myTabv" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="appart-tab" data-bs-toggle="tab" data-bs-target="#appart" type="button" role="tab" aria-controls="appart" aria-selected="true">Appartements</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="villa-tab" data-bs-toggle="tab" data-bs-target="#villa" type="button" role="tab" aria-controls="villa" aria-selected="false">Villas</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="terrain-tab" data-bs-toggle="tab" data-bs-target="#terrain" type="button" role="tab" aria-controls="terrain" aria-selected="true">Terrains</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="commerce-tab" data-bs-toggle="tab" data-bs-target="#commerce" type="button" role="tab" aria-controls="commerce" aria-selected="false">Commerces</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="location-tab"  style="justify-content: center;">
+                <ul class="nav nav-tabs" id="myTabv" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="lappart-tab" data-bs-toggle="tab" data-bs-target="#lappart" type="button" role="tab" aria-controls="lappart" aria-selected="false">Appartements</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="lvilla-tab" data-bs-toggle="tab" data-bs-target="#lvilla" type="button" role="tab" aria-controls="lvilla" aria-selected="false">Villas</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="lterrain-tab" data-bs-toggle="tab" data-bs-target="#lterrain" type="button" role="tab" aria-controls="lterrain" aria-selected="true">Terrains</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="lcommerce-tab" data-bs-toggle="tab" data-bs-target="#lcommerce" type="button" role="tab" aria-controls="lcommerce" aria-selected="false">Commerces</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container py-md-3 tab-content" id="myTabContent">
+            <div class="content row mt-5 pt-3 tab-pane fade show active" id="appart" role="tabpanel" aria-labelledby="appart-tab">
+            {% for bien in ventes.Appartement %}
+                {% set image = bien.images | first %}
+                <div class="grids4-info  col-lg-4 col-md-6">
+                    {% if image.url is defined %}
+                        <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/" ~ image.url) }}" style="height: 254px;width: 350px" width="350" height="254" class="img-fluid" alt=""></a>
+                    {% else %}
+                        <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/g7.jpg") }}" style="height: 254px;width: 350px" class="img-fluid" alt=""></a>
+                    {% endif %}
+                    <ul class="location-top">
+                        {% if bien.type ==1 %}
+                            <li class="rent">A Louer</li>
+                        {% else %}
+                            <li class="rent">A Vendre</li>
+                        {% endif %}
+                        {% if bien.neuf ==1 %}
+                            <li class="open-1">Neuf</li>
+                        {% endif %}
+
+                        <li class="sale">Réf : {{ bien.ref }}</li>
+                    </ul>
+                    <div class="info-bg">
+                        <h5><a href="{{ path('app_biens_show', {'id': bien.id}) }}">{{ bien.nom }}</a></h5>
+                        {% if bien.prix|default %}
+                            <p>{{ bien.prix}}  DT</p>
+                        {% endif %}
+                        <p class="rent">{{ bien.ville.nom }}</p>
+                        <ul>
+                            <li><span class="fa fa-bed"></span> {{ bien.pieces }} chambres</li>
+                            <li><span class="fa fa-home"></span>{{ bien.etat }}</li>
+                            <li><span class="fa fa-share-square-o"></span> {{ bien.surface }} mètres</li>
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            <div class="content row mt-5 pt-3 tab-pane fade" id="villa" role="tabpanel" aria-labelledby="villa-tab">
+                {% for bien in ventes.Villa %}
+                    {% set image = bien.images | first %}
+                    <div class="grids4-info  col-lg-4 col-md-6">
+                        {% if image.url is defined %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/" ~ image.url) }}" style="height: 254px;width: 350px" width="350" height="254" class="img-fluid" alt=""></a>
+                        {% else %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/g7.jpg") }}" style="height: 254px;width: 350px" class="img-fluid" alt=""></a>
+                        {% endif %}
+                        <ul class="location-top">
+                            {% if bien.type ==1 %}
+                                <li class="rent">A Louer</li>
+                            {% else %}
+                                <li class="rent">A Vendre</li>
+                            {% endif %}
+                            {% if bien.neuf ==1 %}
+                                <li class="open-1">Neuf</li>
+                            {% endif %}
+
+                            <li class="sale">Réf : {{ bien.ref }}</li>
+                        </ul>
+                        <div class="info-bg">
+                            <h5><a href="{{ path('app_biens_show', {'id': bien.id}) }}">{{ bien.nom }}</a></h5>
+                            {% if bien.prix|default %}
+                                <p>{{ bien.prix}}  DT</p>
+                            {% endif %}
+                            <p class="rent">{{ bien.ville.nom }}</p>
+                            <ul>
+                                <li><span class="fa fa-bed"></span> {{ bien.pieces }} chambres</li>
+                                <li><span class="fa fa-home"></span>{{ bien.etat }}</li>
+                                <li><span class="fa fa-share-square-o"></span> {{ bien.surface }} mètres</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="content row mt-5 pt-3 tab-pane fade" id="terrain" role="tabpanel" aria-labelledby="terrain-tab">
+                {% for bien in ventes.Terrain %}
+                    {% set image = bien.images | first %}
+                    <div class="grids4-info  col-lg-4 col-md-6">
+                        {% if image.url is defined %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/" ~ image.url) }}" style="height: 254px;width: 350px" width="350" height="254" class="img-fluid" alt=""></a>
+                        {% else %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/g7.jpg") }}" style="height: 254px;width: 350px" class="img-fluid" alt=""></a>
+                        {% endif %}
+                        <ul class="location-top">
+                            {% if bien.type ==1 %}
+                                <li class="rent">A Louer</li>
+                            {% else %}
+                                <li class="rent">A Vendre</li>
+                            {% endif %}
+                            {% if bien.neuf ==1 %}
+                                <li class="open-1">Neuf</li>
+                            {% endif %}
+
+                            <li class="sale">Réf : {{ bien.ref }}</li>
+                        </ul>
+                        <div class="info-bg">
+                            <h5><a href="{{ path('app_biens_show', {'id': bien.id}) }}">{{ bien.nom }}</a></h5>
+                            {% if bien.prix|default %}
+                                <p>{{ bien.prix}}  DT</p>
+                            {% endif %}
+                            <p class="rent">{{ bien.ville.nom }}</p>
+                            <ul>
+                                <li><span class="fa fa-bed"></span> {{ bien.pieces }} chambres</li>
+                                <li><span class="fa fa-home"></span>{{ bien.etat }}</li>
+                                <li><span class="fa fa-share-square-o"></span> {{ bien.surface }} mètres</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="content row mt-5 pt-3 tab-pane fade" id="commerce" role="tabpanel" aria-labelledby="commerce-tab">
+                {% for bien in ventes.Commerce %}
+                    {% set image = bien.images | first %}
+                    <div class="grids4-info  col-lg-4 col-md-6">
+                        {% if image.url is defined %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/" ~ image.url) }}" style="height: 254px;width: 350px" width="350" height="254" class="img-fluid" alt=""></a>
+                        {% else %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/g7.jpg") }}" style="height: 254px;width: 350px" class="img-fluid" alt=""></a>
+                        {% endif %}
+                        <ul class="location-top">
+                            {% if bien.type ==1 %}
+                                <li class="rent">A Louer</li>
+                            {% else %}
+                                <li class="rent">A Vendre</li>
+                            {% endif %}
+                            {% if bien.neuf ==1 %}
+                                <li class="open-1">Neuf</li>
+                            {% endif %}
+
+                            <li class="sale">Réf : {{ bien.ref }}</li>
+                        </ul>
+                        <div class="info-bg">
+                            <h5><a href="{{ path('app_biens_show', {'id': bien.id}) }}">{{ bien.nom }}</a></h5>
+                            {% if bien.prix|default %}
+                                <p>{{ bien.prix}}  DT</p>
+                            {% endif %}
+                            <p class="rent">{{ bien.ville.nom }}</p>
+                            <ul>
+                                <li><span class="fa fa-bed"></span> {{ bien.pieces }} chambres</li>
+                                <li><span class="fa fa-home"></span>{{ bien.etat }}</li>
+                                <li><span class="fa fa-share-square-o"></span> {{ bien.surface }} mètres</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="content row mt-5 pt-3 tab-pane fade" id="lappart" role="tabpanel" aria-labelledby="lappart-tab">
+                {% for bien in location.Appartement %}
+                    {% set image = bien.images | first %}
+                    <div class="grids4-info  col-lg-4 col-md-6">
+                        {% if image.url is defined %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/" ~ image.url) }}" style="height: 254px;width: 350px" width="350" height="254" class="img-fluid" alt=""></a>
+                        {% else %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/g7.jpg") }}" style="height: 254px;width: 350px" class="img-fluid" alt=""></a>
+                        {% endif %}
+                        <ul class="location-top">
+                            {% if bien.type ==1 %}
+                                <li class="rent">A Louer</li>
+                            {% else %}
+                                <li class="rent">A Vendre</li>
+                            {% endif %}
+                            {% if bien.neuf ==1 %}
+                                <li class="open-1">Neuf</li>
+                            {% endif %}
+
+                            <li class="sale">Réf : {{ bien.ref }}</li>
+                        </ul>
+                        <div class="info-bg">
+                            <h5><a href="{{ path('app_biens_show', {'id': bien.id}) }}">{{ bien.nom }}</a></h5>
+                            {% if bien.prix|default %}
+                                <p>{{ bien.prix}}  DT</p>
+                            {% endif %}
+                            <p class="rent">{{ bien.ville.nom }}</p>
+                            <ul>
+                                <li><span class="fa fa-bed"></span> {{ bien.pieces }} chambres</li>
+                                <li><span class="fa fa-home"></span>{{ bien.etat }}</li>
+                                <li><span class="fa fa-share-square-o"></span> {{ bien.surface }} mètres</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="content row mt-5 pt-3 tab-pane fade" id="lvilla" role="tabpanel" aria-labelledby="lvilla-tab">
+                {% for bien in location.Villa %}
+                    {% set image = bien.images | first %}
+                    <div class="grids4-info  col-lg-4 col-md-6">
+                        {% if image.url is defined %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/" ~ image.url) }}" style="height: 254px;width: 350px" width="350" height="254" class="img-fluid" alt=""></a>
+                        {% else %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/g7.jpg") }}" style="height: 254px;width: 350px" class="img-fluid" alt=""></a>
+                        {% endif %}
+                        <ul class="location-top">
+                            {% if bien.type ==1 %}
+                                <li class="rent">A Louer</li>
+                            {% else %}
+                                <li class="rent">A Vendre</li>
+                            {% endif %}
+                            {% if bien.neuf ==1 %}
+                                <li class="open-1">Neuf</li>
+                            {% endif %}
+
+                            <li class="sale">Réf : {{ bien.ref }}</li>
+                        </ul>
+                        <div class="info-bg">
+                            <h5><a href="{{ path('app_biens_show', {'id': bien.id}) }}">{{ bien.nom }}</a></h5>
+                            {% if bien.prix|default %}
+                                <p>{{ bien.prix}}  DT</p>
+                            {% endif %}
+                            <p class="rent">{{ bien.ville.nom }}</p>
+                            <ul>
+                                <li><span class="fa fa-bed"></span> {{ bien.pieces }} chambres</li>
+                                <li><span class="fa fa-home"></span>{{ bien.etat }}</li>
+                                <li><span class="fa fa-share-square-o"></span> {{ bien.surface }} mètres</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="content row mt-5 pt-3 tab-pane fade" id="lterrain" role="tabpanel" aria-labelledby="lterrain-tab">
+                {% for bien in location.Terrain %}
+                    {% set image = bien.images | first %}
+                    <div class="grids4-info  col-lg-4 col-md-6">
+                        {% if image.url is defined %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/" ~ image.url) }}" style="height: 254px;width: 350px" width="350" height="254" class="img-fluid" alt=""></a>
+                        {% else %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/g7.jpg") }}" style="height: 254px;width: 350px" class="img-fluid" alt=""></a>
+                        {% endif %}
+                        <ul class="location-top">
+                            {% if bien.type ==1 %}
+                                <li class="rent">A Louer</li>
+                            {% else %}
+                                <li class="rent">A Vendre</li>
+                            {% endif %}
+                            {% if bien.neuf ==1 %}
+                                <li class="open-1">Neuf</li>
+                            {% endif %}
+
+                            <li class="sale">Réf : {{ bien.ref }}</li>
+                        </ul>
+                        <div class="info-bg">
+                            <h5><a href="{{ path('app_biens_show', {'id': bien.id}) }}">{{ bien.nom }}</a></h5>
+                            {% if bien.prix|default %}
+                                <p>{{ bien.prix}}  DT</p>
+                            {% endif %}
+                            <p class="rent">{{ bien.ville.nom }}</p>
+                            <ul>
+                                <li><span class="fa fa-bed"></span> {{ bien.pieces }} chambres</li>
+                                <li><span class="fa fa-home"></span>{{ bien.etat }}</li>
+                                <li><span class="fa fa-share-square-o"></span> {{ bien.surface }} mètres</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="content row mt-5 pt-3 tab-pane fade" id="lcommerce" role="tabpanel" aria-labelledby="lcommerce-tab">
+                {% for bien in location.Commerce %}
+                    {% set image = bien.images | first %}
+                    <div class="grids4-info  col-lg-4 col-md-6">
+                        {% if image.url is defined %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/" ~ image.url) }}" style="height: 254px;width: 350px" width="350" height="254" class="img-fluid" alt=""></a>
+                        {% else %}
+                            <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/g7.jpg") }}" style="height: 254px;width: 350px" class="img-fluid" alt=""></a>
+                        {% endif %}
+                        <ul class="location-top">
+                            {% if bien.type ==1 %}
+                                <li class="rent">A Louer</li>
+                            {% else %}
+                                <li class="rent">A Vendre</li>
+                            {% endif %}
+                            {% if bien.neuf ==1 %}
+                                <li class="open-1">Neuf</li>
+                            {% endif %}
+
+                            <li class="sale">Réf : {{ bien.ref }}</li>
+                        </ul>
+                        <div class="info-bg">
+                            <h5><a href="{{ path('app_biens_show', {'id': bien.id}) }}">{{ bien.nom }}</a></h5>
+                            {% if bien.prix|default %}
+                                <p>{{ bien.prix}}  DT</p>
+                            {% endif %}
+                            <p class="rent">{{ bien.ville.nom }}</p>
+                            <ul>
+                                <li><span class="fa fa-bed"></span> {{ bien.pieces }} chambres</li>
+                                <li><span class="fa fa-home"></span>{{ bien.etat }}</li>
+                                <li><span class="fa fa-share-square-o"></span> {{ bien.surface }} mètres</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+    <script type="application/javascript">
+        $('.nav-link').on('click', function(){
+            console.log($(this).data('bsTarget'));
+        $('.content ').removeClass('active');
+        $('.content ').removeClass('show');
+        $($(this).data('bsTarget')).addClass('active');
+        $($(this).data('bsTarget')).addClass('show');
+        });
+
+        $('#vente-tab').on('click', function(){
+            $('#appart').addClass('active');
+            $('#appart-tab').addClass('active');
+            $('#appart').addClass('show');
+        });
+        $('#location-tab').on('click', function(){
+            $('#lappart').addClass('active');
+            $('#lappart-tab').addClass('active');
+            $('#lappart').addClass('show');
+        });
+    </script>
+{% endblock %}

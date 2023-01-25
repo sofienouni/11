@@ -56,6 +56,7 @@ class BiensType extends AbstractType
                     'Appartement' => 'Appartement',
                     'Maison' => 'Maison',
                     'Terrain' => 'Terrain',
+                    'Villa' => 'Villa',
                     'Commerce' => 'Commerce',
                     'Garage/Parking' => 'Garage/Parking',
                     'Immeuble' => 'Immeuble',

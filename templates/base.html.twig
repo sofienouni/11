@@ -90,6 +90,7 @@
             </div>
         </nav>
     </section>
+    <script src="{{ asset("assets/js/jquery-3.3.1.min.js") }}"></script>
         {% block body %}{% endblock %}
         <!-- grids block 5 -->
         <section class="w3l-footer-29-main" id="footer">
@@ -171,7 +172,7 @@
             <script src="{{ asset("assets/js/chosen.jquery.js") }}"></script>
             <script src="{{ asset("assets/js/prism.js") }}"></script>
             <script src="{{ asset("assets/js/init.js") }}"></script>
-            <script src="chos"></script>
+            <script src="{{ asset('assets/js/bootstrap.bundle.js') }}" defer></script>
             <!-- //footer-28 block -->
 
             <script>
@@ -191,7 +192,7 @@
                     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
             </script>
             <script>
-                $('.form-control-chosen').chosen();
+
             </script>
 
         {% endblock %}
