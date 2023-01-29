@@ -1,0 +1,42 @@
+{% extends 'base_bien.html.twig' %}
+
+{% block title %}Nouveau{% endblock %}
+
+{% block body %}
+    <h1 style="text-align: center;">Editer Un Texte</h1>
+
+    {{ form_start(form) }}
+    <div id="addEmployeeModal" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    {{ form_row(form._token) }}
+                    <div class="modal-body" style="padding-left: 4rem;padding-right: 4rem;">
+                        <div class="form-group">
+                            <label>Page</label>
+                            {{ form_widget(form.page,{ 'attr': {'style': 'float: right;'} }) }}
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label>Titre</label>
+                            {{ form_widget(form.titre,{ 'attr': {'style': 'float: right;'} }) }}
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label>Texte</label>
+                            {{ form_widget(form.texte,{ 'attr': {'style': 'float: right;'} }) }}
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+                        <a href="{{ path('app_texte_index') }}" class="btn btn-default" >Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}

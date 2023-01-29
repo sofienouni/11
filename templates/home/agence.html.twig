@@ -7,37 +7,21 @@
         <div class="features-with-17_sur py-5">
             <div class="container py-md-3">
                 <div class="heading text-center mx-auto">
-                    <h3 class="head text-white">Notre Agence</h3>
-                    <p class="my-3 head "> Nos agences à Tunis
-                        Créée en 2021, 11.tn immobilière est un réseau d’agences immobilières dynamique, conviviale qui sont heureux de vous propose leurs services.
-
-                        Les agences immobilières à Tunis dont les fondements reposent sur le sérieux, la transparence et le professionnalisme au service de leurs clients.
-
-                        Notre conception de la relation est fondée sur la proximité et le conseil personnalisé au client. Un contact direct et privilégié, garant d’une prestation de qualité.</p>
+                    {% for texte in textes %}
+                        {% if texte.id == 1%}
+                            <h3 class="head text-white">{{ texte.titre }}</h3>
+                            <p class="my-3 head ">{{ texte.texte }}</p>
+                        {% endif %}
+                    {% endfor %}
                 </div>
                 <div class="row pt-5 mt-3">
                     <div class="col-lg-5 features-with-17-left_sur">
-                        <h4 class="lft-head">We’re Offering Unmatched Services</h4>
-                        <p>Nos agences à Tunis
-                            Créée en 2021, 11.tn immobilière est un réseau d’agences immobilières dynamique, conviviale qui sont heureux de vous propose leurs services.
-
-                            Les agences immobilières à Tunis dont les fondements reposent sur le sérieux, la transparence et le professionnalisme au service de leurs clients.
-
-                            Notre conception de la relation est fondée sur la proximité et le conseil personnalisé au client. Un contact direct et privilégié, garant d’une prestation de qualité.</p>
-                        <div class="stats-1">
-                            <div class="stats-1-left">
-                                <h4>2300</h4>
-                                <h6>Clients</h6>
-                            </div>
-                            <div class="stats-1-left">
-                                <h4>16</h4>
-                                <h6>Awards</h6>
-                            </div>
-                            <div class="stats-1-left">
-                                <h4>2536</h4>
-                                <h6>Projets</h6>
-                            </div>
-                        </div>
+                        {% for texte in textes %}
+                            {% if texte.id == 2%}
+                                <h4 class="lft-head">{{ texte.titre }}</h4>
+                                <p>{{ texte.texte }}</p>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                     <div class="col-lg-7 my-lg-0 my-5 align-self-center features-with-17-right_sur">
                         <div class="features-with-17-right-tp_sur">
@@ -45,8 +29,12 @@
                                 <span class="fa fa-laptop s4"></span>
                             </div>
                             <div class="features-with-17-left2">
-                                <h6><a href="#url">Service Rapide</a></h6>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero, dolore.</p>
+                                {% for texte in textes %}
+                                    {% if texte.id == 6%}
+                                        <h6><a href="#url">{{ texte.titre }}</a></h6>
+                                        <p>{{ texte.texte }}</p>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="features-with-17-right-tp_sur">
@@ -54,8 +42,12 @@
                                 <span class="fa fa-database s5"></span>
                             </div>
                             <div class="features-with-17-left2">
-                                <h6><a href="#url">Large Choix de Biens</a></h6>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero, dolore.</p>
+                                {% for texte in textes %}
+                                    {% if texte.id == 7%}
+                                        <h6><a href="#url">{{ texte.titre }}</a></h6>
+                                        <p>{{ texte.texte }}</p>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="features-with-17-right-tp_sur">
@@ -63,8 +55,12 @@
                                 <span class="fa fa-lock s3"></span>
                             </div>
                             <div class="features-with-17-left2">
-                                <h6><a href="#url">Qualité de Service</a></h6>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero, dolore.</p>
+                                {% for texte in textes %}
+                                    {% if texte.id == 8%}
+                                        <h6><a href="#url">{{ texte.titre }}</a></h6>
+                                        <p>{{ texte.texte }}</p>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="features-with-17-right-tp_sur">
@@ -72,8 +68,12 @@
                                 <span class="fa fa-codepen s2"></span>
                             </div>
                             <div class="features-with-17-left2">
-                                <h6><a href="#url">Accompagnement Complet</a></h6>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero, dolore.</p>
+                                {% for texte in textes %}
+                                    {% if texte.id == 9%}
+                                        <h6><a href="#url">{{ texte.titre }}</a></h6>
+                                        <p>{{ texte.texte }}</p>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
 

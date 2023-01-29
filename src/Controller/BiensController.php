@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Biens;
 use App\Entity\Images;
+use App\Entity\Textes;
 use App\Entity\Villes;
 use App\Form\BiensType;
+use App\Form\TextesType;
 use App\Form\VilleType;
 use App\Repository\BiensRepository;
 use App\Repository\ImagesRepository;
 use App\Repository\MessagesRepository;
+use App\Repository\TextesRepository;
 use App\Repository\VentesRepository;
 use App\Repository\VillesRepository;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
@@ -53,6 +56,23 @@ class BiensController extends AbstractController
             10
         );
         return $this->render('biens/ville_index.html.twig', [
+            'pager' => $pagerfanta,
+        ]);
+    }
+
+    #[Route('/texte', name: 'app_texte_index', methods: ['GET'])]
+    public function texte(TextesRepository $textesRepository, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+
+        $queryBuilder = $textesRepository->findAllFieldPaginated();
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
+            $adapter,
+            $request->query->get('page', 1),
+            15
+        );
+        return $this->render('biens/texte_index.html.twig', [
             'pager' => $pagerfanta,
         ]);
     }
@@ -187,6 +207,26 @@ class BiensController extends AbstractController
 
         return $this->renderForm('biens/edit_ville.html.twig', [
             'ville' => $ville,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/edit_texte', name: 'app_texte_edit', methods: ['GET', 'POST'])]
+    public function edit_texte(Request $request, Textes $texte, TextesRepository $textesRepository): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $form = $this->createForm(TextesType::class, $texte);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $textesRepository->save($texte, true);
+
+            return $this->redirectToRoute('app_texte_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('biens/edit_texte.html.twig', [
+            'text' => $texte,
             'form' => $form,
         ]);
     }

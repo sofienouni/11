@@ -14,6 +14,7 @@ use App\Form\MessagesType;
 use App\Form\VentesType;
 use App\Repository\BiensRepository;
 use App\Repository\MessagesRepository;
+use App\Repository\TextesRepository;
 use App\Repository\VentesRepository;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
@@ -229,7 +230,7 @@ class HomeController extends AbstractController
 
 
     #[Route('/agence', name: 'app_agence')]
-    public function agence(BiensRepository $biensRepository, Request $request): Response
+    public function agence(BiensRepository $biensRepository,TextesRepository $textesRepository, Request $request): Response
     {
 
         $villes = $this->manager->getRepository(Villes::class)->findAll();
@@ -249,15 +250,17 @@ class HomeController extends AbstractController
             $request->query->get('page', 1),
             9
         );
+        $textes = $textesRepository->findBy(['page' => 'Notre Agence']);
         return $this->render('home/agence.html.twig', [
             'villes' => $villes,
+            'textes' => $textes,
             'form' => $form->createView(),
             'pager' => $pagerfanta,
         ]);
     }
 
     #[Route('/vendre', name: 'app_vendre')]
-    public function vendre(VentesRepository $ventesRepository, Request $request): Response
+    public function vendre(VentesRepository $ventesRepository,TextesRepository $textesRepository , Request $request): Response
     {
 
         $vente = new Ventes();
@@ -270,15 +273,16 @@ class HomeController extends AbstractController
             $ventesRepository->save($vente, true);
             return $this->redirectToRoute('app_vendre', [], Response::HTTP_SEE_OTHER);
         }
-
+        $textes = $textesRepository->findBy(['page' => 'vendre']);
 
         return $this->render('home/vendre.html.twig', [
             'form' => $form->createView(),
+            'textes' => $textes
         ]);
     }
 
     #[Route('/annonce', name: 'app_annonce')]
-    public function annonce(VentesRepository $ventesRepository, Request $request): Response
+    public function annonce(VentesRepository $ventesRepository,TextesRepository $textesRepository , Request $request): Response
     {
 
         $vente = new Ventes();
@@ -291,11 +295,12 @@ class HomeController extends AbstractController
             $ventesRepository->save($vente, true);
             return $this->redirectToRoute('app_vendre', [], Response::HTTP_SEE_OTHER);
         }
-
+        $textes = $textesRepository->findBy(['page' => ['Déposer Une Annonce','vendre']]);
 
         return $this->render('home/vendre.html.twig', [
             'form' => $form->createView(),
-            'location' => true
+            'location' => true,
+            'textes' => $textes
         ]);
     }
 }
