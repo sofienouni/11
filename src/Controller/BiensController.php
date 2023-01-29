@@ -159,10 +159,14 @@ class BiensController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_biens_show', methods: ['GET'])]
-    public function show(Biens $bien): Response
+    public function show(Biens $bien, BiensRepository $biensRepository): Response
     {
+        $value['type'] = $bien->isType();
+        $value['type_bien'] = $bien->getTypeBien();
+        $biens = $biensRepository->findByExampleField($value);
         return $this->render('biens/show.html.twig', [
             'bien' => $bien,
+            'biens' => $biens
         ]);
     }
 

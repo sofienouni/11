@@ -74,15 +74,45 @@
                     </div>
                     {% set image = bien.images|first %}
 
+
                     {% if image.url is defined %}
-                        <div class="cwp4-image col-lg-6 pl-lg-5 mt-lg-0 mt-5">
-                            <img src="{{ asset("assets/images/"  ~ image.url) }}" class="img-fluid" alt="" />
+                        <div id="custCarousel" class="carousel slide" data-ride="carousel" style="width: 50%;margin: auto;" align="center">
+                            <!-- slides -->
+                            <div class="carousel-inner">
+                                {% set active = true %}
+                                {% for image in bien.images %}
+                                    {% if image is defined %}
+                                        {% if image.url is empty %}
+                                        {% else %}
+                                            {% if active %}
+                                                <div class="carousel-item active">
+                                                    <img src="{{ asset("assets/images/"  ~ image.url) }}" width="100%" height="400" alt="Hills">
+                                                </div>
+                                                {% set active = false %}
+                                            {% else %}
+                                                <div class="carousel-item">
+                                                    <img src="{{ asset("assets/images/"  ~ image.url) }}" width="100%" height="400" alt="Hills">
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <!-- Left right -->
+                            <a class="carousel-control-prev" href="#custCarousel" data-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </a>
+                            <a class="carousel-control-next" href="#custCarousel" data-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </a>
                         </div>
                     {% else %}
                         <div class="cwp4-image col-lg-6 pl-lg-5 mt-lg-0 mt-5">
                             <img src="{{ asset("assets/images/pexels-photomix-company-101808.jpg") }}" class="img-fluid" alt="" />
                         </div>
                     {% endif %}
+
 
                 </div>
             </div>
@@ -93,6 +123,7 @@
         <!-- /team-grids -->
         <div class="team-content" id="images" style="padding: 0px;">
             <div class="container" style="padding-bottom: 20px;">
+                <p style="text-align: center;font-size: 390%;margin: auto;padding-top: 4%;">Plus D'images</p>
                 <div class="d-grid grid-col-4 text-center mt-5 pt-3">
                     {% for image in bien.images %}
                         {% if image is defined %}
@@ -111,6 +142,49 @@
             </div>
         </div>
         <!-- /team-grids -->
+    </section>
+    <section class="grids-4" id="properties">
+        <div id="grids4-block" class="py-5">
+            <p style="text-align: center;font-size: 390%;margin: auto;">Produits similaires</p>
+            <div class="container py-md-3">
+                <div class="row mt-5 pt-3">
+                    {% for bien in biens %}
+                        {% set image = bien.images | first %}
+                        <div class="grids2-info  col-lg-2 col-md-8">
+                            {% if image.url is defined %}
+                                <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/" ~ image.url) }}" style="height: 120px;width: 350px" width="350" height="100" class="img-fluid" alt=""></a>
+                            {% else %}
+                                <a href="{{ path('app_biens_show', {'id': bien.id}) }}"><img src="{{ asset("assets/images/g7.jpg") }}" style="height: 120px;width: 350px" class="img-fluid" alt=""></a>
+                            {% endif %}
+                            <ul class="location-top">
+                                {% if bien.type ==1 %}
+                                    <li class="rent">A Louer</li>
+                                {% else %}
+                                    <li class="rent">A Vendre</li>
+                                {% endif %}
+                                {% if bien.neuf ==1 %}
+                                    <li class="open-1">Neuf</li>
+                                {% endif %}
+
+                                <li class="sale">Réf : {{ bien.ref }}</li>
+                            </ul>
+                            <div class="info-bg" style="padding: 15px 10px;">
+                                <h5><a href="{{ path('app_biens_show', {'id': bien.id}) }}">{{ bien.nom }}</a></h5>
+                                {% if bien.prix|default %}
+                                    <p>{{ bien.prix}}  DT</p>
+                                {% endif %}
+                                <p class="rent">{{ bien.ville.nom }}</p>
+                                <ul>
+                                    <li><span class="fa fa-bed"></span> {{ bien.pieces }} chambres</li>
+                                    <li><span class="fa fa-home"></span>{{ bien.etat }}</li>
+                                    <li><span class="fa fa-share-square-o"></span> {{ bien.surface }} mètres</li>
+                                </ul>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </section>
 
 {% endblock %}

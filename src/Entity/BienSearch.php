@@ -18,6 +18,8 @@ class BienSearch
 
     private ?string $ref = null;
 
+    private ?string $trie = null;
+
 
     public function getType(): ?string
     {
@@ -78,6 +80,18 @@ class BienSearch
     public function setRef(?string $ref): self
     {
         $this->ref = $ref;
+
+        return $this;
+    }
+
+    public function getTrie(): ?string
+    {
+        return $this->trie;
+    }
+
+    public function setTrie(?string $trie): self
+    {
+        $this->trie = $trie;
 
         return $this;
     }

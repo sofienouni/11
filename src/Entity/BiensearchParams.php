@@ -24,6 +24,9 @@ class BiensearchParams
 
     private ?string $ref = null;
 
+    private ?string $trie = null;
+
+
 
     public function getType(): ?string
     {
@@ -123,4 +126,16 @@ class BiensearchParams
 
         return $this;
     }
+    public function getTrie(): ?string
+    {
+        return $this->trie;
+    }
+
+    public function setTrie(?string $trie): self
+    {
+        $this->trie = $trie;
+
+        return $this;
+    }
+
 }

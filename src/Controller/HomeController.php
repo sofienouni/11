@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Biens;
 use App\Entity\BienSearch;
 use App\Entity\BiensearchParams;
 use App\Entity\Messages;
@@ -19,19 +20,23 @@ use Pagerfanta\Pagerfanta;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class HomeController extends AbstractController
 {
 
     private $apiService;
     private $manager;
+    private $requestStack;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager,RequestStack $requestStack)
     {
         $this->manager = $manager;
+        $this->requestStack = $requestStack;
     }
 
     #[Route('/', name: 'app_home')]
@@ -42,6 +47,8 @@ class HomeController extends AbstractController
         $biensearch = new BienSearch();
         $form = $this->createForm(BienSearchType::class, $biensearch);
         $form->handleRequest($request);
+        $session = $this->requestStack->getSession();
+        $ids = $session->get('selection',[]);
         $SearchParams = null;
         if ($form->isSubmitted() && $form->isValid()) {
             $SearchParams = $form->getData();
@@ -71,6 +78,7 @@ class HomeController extends AbstractController
             $location['Commerce'] = $biensRepository->findByExampleField($value);
             return $this->render('home/selection.html.twig', [
                 'ventes' => $vente,
+                'ids' => $ids,
                 'location' => $location,
                 'form' => $form->createView(),
             ]);
@@ -83,10 +91,60 @@ class HomeController extends AbstractController
             9
         );
 
+
+
         return $this->render('home/index.html.twig', [
             'villes' => $villes,
+            'ids' => $ids,
             'form' => $form->createView(),
             'pager' => $pagerfanta,
+        ]);
+    }
+
+    #[Route('save_selection/{id}', name: 'app_selection_save', methods: ['GET'])]
+    public function selection_save(Biens $bien): JsonResponse
+    {
+        $session = $this->requestStack->getSession();
+        $ids = $session->get('selection',[]);
+        $ids[$bien->getId()] = $bien->getId();
+        $session->set('selection', $ids);
+        return $this->json($ids);
+    }
+
+    #[Route('remove_selection/{id}', name: 'app_selection_remove', methods: ['GET'])]
+    public function remove_selection(Biens $bien): JsonResponse
+    {
+        $session = $this->requestStack->getSession();
+        $selection = $session->get('selection',[]);
+        unset($selection[$bien->getId()]);
+        $session->set('selection', $selection);
+        $selection = $session->get('selection',[]);
+        return $this->json($selection);
+    }
+
+    #[Route('/ma_selection', name: 'app_selection')]
+    public function ma_selection(BiensRepository $biensRepository, Request $request): Response
+    {
+
+        $session = $this->requestStack->getSession();
+        $selection = $session->get('selection',[]);
+        $ma_selection = $biensRepository->findBy(array('id' => $selection));
+
+        return $this->render('home/maselection.html.twig', [
+            'biens' => $ma_selection,
+        ]);
+    }
+
+    #[Route('/comparateur', name: 'app_comparateur')]
+    public function comparateur(BiensRepository $biensRepository, Request $request): Response
+    {
+
+        $session = $this->requestStack->getSession();
+        $selection = $session->get('selection',[]);
+        $ma_selection = $biensRepository->findBy(array('id' => $selection));
+
+        return $this->render('home/comparateur.html.twig', [
+            'biens' => $ma_selection,
         ]);
     }
 
@@ -112,8 +170,11 @@ class HomeController extends AbstractController
             $request->query->get('page', 1),
             9
         );
+        $session = $this->requestStack->getSession();
+        $ids = $session->get('selection',[]);
         return $this->render('home/acheter.html.twig', [
             'villes' => $villes,
+            'ids' => $ids,
             'form' => $form->createView(),
             'pager' => $pagerfanta,
         ]);
@@ -140,8 +201,11 @@ class HomeController extends AbstractController
             $request->query->get('page', 1),
             9
         );
+        $session = $this->requestStack->getSession();
+        $ids = $session->get('selection',[]);
         return $this->render('home/acheter.html.twig', [
             'villes' => $villes,
+            'ids' => $ids,
             'form' => $form->createView(),
             'pager' => $pagerfanta,
         ]);

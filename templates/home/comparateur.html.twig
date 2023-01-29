@@ -1,0 +1,302 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comparateur!{% endblock %}
+
+{% block body %}
+    <section class="w3l-contact-breadcrum">
+        <div class="breadcrum-bg py-sm-5 py-4">
+            <div class="container py-lg-3">
+
+                <h2 style="border: none;">Comparateur</h2>
+
+            </div>
+        </div>
+    </section>
+    <!-- contact form -->
+    <section class="grids-4" id="properties">
+        <div id="grids4-block" class="py-5">
+            <div class="container py-md-3">
+                <div class="row mt-5 pt-3">
+                    <table class="table align-middle mb-0 bg-white">
+                        <thead class="bg-light">
+                        <tr>
+                            <th>#</th>
+                            {% for bien in biens  %}
+                                <th>{{ bien.nom }}</th>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">Référence</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {% for bien in biens  %}
+                                <td><p class="fw-normal mb-1">{{ bien.ref }}</p></td>
+                            {% endfor %}
+{#                            <td>#}
+{#                                <span class="badge badge-success rounded-pill d-inline">Active</span>#}
+{#                            </td>#}
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">Nbr Pièces</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {% for bien in biens  %}
+                                <td><p class="fw-normal mb-1">{{ bien.pieces }}</p></td>
+                            {% endfor %}
+                            {#                            <td>#}
+                            {#                                <span class="badge badge-success rounded-pill d-inline">Active</span>#}
+                            {#                            </td>#}
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">Surface</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {% for bien in biens  %}
+                                <td><p class="fw-normal mb-1">{{ bien.surface }} m</p></td>
+                            {% endfor %}
+                            {#                            <td>#}
+                            {#                                <span class="badge badge-success rounded-pill d-inline">Active</span>#}
+                            {#                            </td>#}
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">Etat</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {% for bien in biens  %}
+                                <td>
+                                    <span class="badge badge-info rounded-pill d-inline">{{ bien.etat }}</span>
+                                </td>
+                            {% endfor %}
+{#                                                        <td>#}
+{#                                                            <span class="badge badge-success rounded-pill d-inline">Active</span>#}
+{#                                                        </td>#}
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">Etage</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {% for bien in biens  %}
+
+                                <td><p class="fw-normal mb-1">{{ bien.etage }}</p></td>
+                            {% endfor %}
+                            {#                            <td>#}
+                            {#                                <span class="badge badge-success rounded-pill d-inline">Active</span>#}
+                            {#                            </td>#}
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">Chauffage</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {% for bien in biens  %}
+                                <td>
+                                    {% if bien.chauffage %}
+                                        <span class="badge badge-success rounded-pill d-inline">Disponible</span>
+                                    {% else %}
+                                        <span class="badge badge-danger rounded-pill d-inline">Non Disponible</span>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                            {#                            <td>#}
+                            {#                                <span class="badge badge-success rounded-pill d-inline">Active</span>#}
+                            {#                            </td>#}
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">Climatisation</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {% for bien in biens  %}
+                                <td>
+                                    {% if bien.climatisation %}
+                                        <span class="badge badge-success rounded-pill d-inline">Disponible</span>
+                                    {% else %}
+                                        <span class="badge badge-danger rounded-pill d-inline">Non Disponible</span>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                            {#                            <td>#}
+                            {#                                <span class="badge badge-success rounded-pill d-inline">Active</span>#}
+                            {#                            </td>#}
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">Ascenceur</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {% for bien in biens  %}
+                                <td>
+                                    {% if bien.ascenceur %}
+                                        <span class="badge badge-success rounded-pill d-inline">Disponible</span>
+                                    {% else %}
+                                        <span class="badge badge-danger rounded-pill d-inline">Non Disponible</span>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                            {#                            <td>#}
+                            {#                                <span class="badge badge-success rounded-pill d-inline">Active</span>#}
+                            {#                            </td>#}
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">Concierge</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {% for bien in biens  %}
+                                <td>
+                                    {% if bien.concierge %}
+                                        <span class="badge badge-success rounded-pill d-inline">Disponible</span>
+                                    {% else %}
+                                        <span class="badge badge-danger rounded-pill d-inline">Non Disponible</span>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                            {#                            <td>#}
+                            {#                                <span class="badge badge-success rounded-pill d-inline">Active</span>#}
+                            {#                            </td>#}
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">Type</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {% for bien in biens  %}
+                                <td>
+                                    {% if bien.type %}
+                                        <p class="fw-normal mb-1">A Louer</p>
+                                    {% else %}
+                                        <p class="fw-normal mb-1">A Vendre</p>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                            {#                            <td>#}
+                            {#                                <span class="badge badge-success rounded-pill d-inline">Active</span>#}
+                            {#                            </td>#}
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">Ville</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {% for bien in biens  %}
+                                <td><p class="fw-normal mb-1">{{ bien.ville.nom }}</p></td>
+                            {% endfor %}
+                            {#                            <td>#}
+                            {#                                <span class="badge badge-success rounded-pill d-inline">Active</span>#}
+                            {#                            </td>#}
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">Type du Bien</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {% for bien in biens  %}
+                                <td><p class="fw-normal mb-1">{{ bien.typeBien }}</p></td>
+                            {% endfor %}
+                            {#                            <td>#}
+                            {#                                <span class="badge badge-success rounded-pill d-inline">Active</span>#}
+                            {#                            </td>#}
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">Prix</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {% for bien in biens  %}
+                                <td><p class="fw-normal mb-1">{{ bien.prix }} DT</p></td>
+                            {% endfor %}
+                            {#                            <td>#}
+                            {#                                <span class="badge badge-success rounded-pill d-inline">Active</span>#}
+                            {#                            </td>#}
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script type="application/javascript" async defer>
+
+        $(document).on("click",'.save_selection',function () {
+            $(this).removeClass();
+            $(this).addClass('btn btn-danger remove_selection');
+            var id = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '/save_selection/'+id,
+                dataType: 'json',
+                encode: true
+            })
+                .done(function(data) {
+                    console.log(data);
+                })
+        });
+        $(document).on("click",'.remove_selection',function () {
+            $(this).removeClass();
+            $(this).addClass('btn btn-secondary save_selection');
+            var id = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '/remove_selection/'+id,
+                dataType: 'json',
+                encode: true
+            })
+                .done(function(data) {
+                    console.log(data);
+                })
+            $(this).closest('.grids4-info').remove();
+        });
+
+
+
+    </script>
+
+{% endblock %}

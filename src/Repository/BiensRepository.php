@@ -47,6 +47,7 @@ class BiensRepository extends ServiceEntityRepository
      */
     public function findAllFieldPaginated($values = null): QueryBuilder
     {
+
         if ($values != null) {
             $type = $values->getType();
             if ($type == 'A Louer') {
@@ -73,10 +74,28 @@ class BiensRepository extends ServiceEntityRepository
 
             }
             $ref = $values->getRef();
+            $order = $values->getTrie();
         }
 
+        if (isset($order)){
+            if ($order == 'prix+'){
+                $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.prix','asc');
+            }
+            elseif ($order == 'prix-'){
+                $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.prix','desc');
+            }
+            elseif ($order == 'surface+'){
+                $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.surface','asc');
+            }
+            elseif ($order == 'surface-'){
+                $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.surface','desc');
+            }else{
+                $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.id','desc');
+            }
+        }else {
+            $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.id','desc');
+        }
 
-        $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.id','desc');
         $expressionBuilder = Criteria::expr();
         $criteria = new Criteria();
         if ($values != null) {
@@ -114,12 +133,15 @@ class BiensRepository extends ServiceEntityRepository
      */
     public function findAllFieldPaginatedwithparams($values = null, $type = null): QueryBuilder
     {
+
         if ($values != null) {
-            $type = $values->getType();
-            if ($type == 'A Louer') {
-                $type = 1;
-            } elseif ($type == 'A Vendre') {
-                $type = 0;
+            if ($type == null) {
+                $type = $values->getType();
+                if ($type == 'A Louer') {
+                    $type = 1;
+                } elseif ($type == 'A Vendre') {
+                    $type = 0;
+                }
             }
             $typeBien = $values->getTypeBien();
             $villes = $values->getVille();
@@ -166,9 +188,27 @@ class BiensRepository extends ServiceEntityRepository
             }
             $neuf = $values->getNeuf();
             $ref = $values->getRef();
+            $order = $values->getTrie();
+        }
+        if (isset($order)){
+            if ($order == 'prix+'){
+                $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.prix','asc');
+            }
+            elseif ($order == 'prix-'){
+                $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.prix','desc');
+            }
+            elseif ($order == 'surface+'){
+                $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.surface','asc');
+            }
+            elseif ($order == 'surface-'){
+                $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.surface','desc');
+            }else{
+                $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.id','desc');
+            }
+        }else {
+            $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.id','desc');
         }
 
-        $queryBuilder = $this->createQueryBuilder('b')->orderBy('b.id','desc');
         $expressionBuilder = Criteria::expr();
         $criteria = new Criteria();
         $criteria->where($expressionBuilder->eq('type', $type));
@@ -224,4 +264,5 @@ class BiensRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
 }
