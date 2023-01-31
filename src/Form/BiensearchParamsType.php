@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\BiensearchParams;
+use App\Entity\TypeBien;
 use App\Entity\Villes;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -23,26 +24,18 @@ class BiensearchParamsType extends AbstractType
                     'A Louer' => 'A Louer',
                     'A Vendre' => 'A Vendre',
                 ],])
-            ->add('typeBien', ChoiceType::class, [
+            ->add('typeBien', EntityType::class, [
+                'placeholder' => 'Choisir une ville',
                 'label' => false,
-                'multiple' => true,
-                'required' => false,
                 'attr' => array(
                     'class' => 'chosen-select',
-                    'data-placeholder' => 'Type Du Bien',
+                    'data-placeholder' => 'Choisir une ville',
                 ),
-                'choices' => [
-                    'Types Du Bien' => 'Types Du Bien',
-                    'Appartement' => 'Appartement',
-                    'Maison' => 'Maison',
-                    'Terrain' => 'Terrain',
-                    'Villa' => 'Villa',
-                    'Commerce' => 'Commerce',
-                    'Garage/Parking' => 'Garage/Parking',
-                    'Immeuble' => 'Immeuble',
-                    'Bureau' => 'Bureau',
-                    'Cave' => 'Cave',
-                ],])
+                'class' => TypeBien::class,
+                'multiple' => true,
+                'required' => false
+
+            ])
             ->add('ville', EntityType::class, [
                 'label' => false,
                 'class' => Villes::class,

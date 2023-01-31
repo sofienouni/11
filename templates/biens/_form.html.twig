@@ -35,11 +35,6 @@
                     </div>
                     <hr>
                     <div class="form-group">
-                        <label>{{ form_label(form.etat) }}</label>
-                        {{ form_widget(form.etat,{ 'attr': {'style': 'float: right;'} }) }}
-                    </div>
-                    <hr>
-                    <div class="form-group">
                         <label>{{ form_label(form.etage) }}</label>
                         {{ form_widget(form.etage,{ 'type':'number', 'attr': {'style': 'float: right;'} }) }}
                     </div>
@@ -98,8 +93,8 @@
                     </div>
                     <hr>
                     <div class="form-group">
-                        <label>{{ form_label(form.typeBien) }}</label>
-                        {{ form_widget(form.typeBien,{ 'attr': {'style': 'float: right;'} }) }}
+                        <label>Type Du Bien</label>
+                        {{ form_widget(form.typebien,{ 'attr': {'style': 'float: right;'} }) }}
                     </div>
                     {% if programme|default %}
                     {% else %}

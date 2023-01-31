@@ -5,19 +5,23 @@ namespace App\Controller;
 use App\Entity\Biens;
 use App\Entity\Images;
 use App\Entity\Textes;
+use App\Entity\TypeBien;
 use App\Entity\Villes;
 use App\Form\BiensType;
 use App\Form\TextesType;
+use App\Form\TypeBienType;
 use App\Form\VilleType;
 use App\Repository\BiensRepository;
 use App\Repository\ImagesRepository;
 use App\Repository\MessagesRepository;
 use App\Repository\TextesRepository;
+use App\Repository\TypeBienRepository;
 use App\Repository\VentesRepository;
 use App\Repository\VillesRepository;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,6 +61,17 @@ class BiensController extends AbstractController
         );
         return $this->render('biens/ville_index.html.twig', [
             'pager' => $pagerfanta,
+        ]);
+    }
+
+    #[Route('/type_bien', name: 'app_type_index', methods: ['GET'])]
+    public function type_bien(TypeBienRepository $typeBienRepository, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+
+        $type_bien = $typeBienRepository->findAll();
+        return $this->render('biens/type_index.html.twig', [
+            'type_bien' => $type_bien,
         ]);
     }
 
@@ -178,6 +193,27 @@ class BiensController extends AbstractController
         ]);
     }
 
+    #[Route('/newType', name: 'app_type_new', methods: ['GET', 'POST'])]
+    public function new_type(Request $request, TypeBienRepository $typeBienRepository): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $type_bien = new TypeBien();
+        $form = $this->createForm(TypeBienType::class, $type_bien);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $typeBienRepository->save($type_bien, true);
+
+
+            return $this->redirectToRoute('app_type_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('biens/new_type.html.twig', [
+            'type_bien' => $type_bien,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_biens_show', methods: ['GET'])]
     public function show(Biens $bien, BiensRepository $biensRepository): Response
     {
@@ -207,6 +243,26 @@ class BiensController extends AbstractController
 
         return $this->renderForm('biens/edit_ville.html.twig', [
             'ville' => $ville,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/edit_type', name: 'app_type_edit', methods: ['GET', 'POST'])]
+    public function edit_type(Request $request, TypeBien $typeBien, TypeBienRepository $typeBienRepository): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $form = $this->createForm(TypeBienType::class, $typeBien);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $typeBienRepository->save($typeBien, true);
+
+            return $this->redirectToRoute('app_type_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('biens/edit_type.html.twig', [
+            'type_bien' => $typeBien,
             'form' => $form,
         ]);
     }
@@ -305,12 +361,33 @@ class BiensController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         if ($this->isCsrfTokenValid('delete'.$ville->getId(), $request->request->get('_token'))) {
             $biens = $biensRepository->findBy(['ville'=>$ville]);
-            foreach ($biens as $bien){
-                $biensRepository->remove($bien);
+            if (isset($biens) and !empty($biens)){
+                $referer = $request->headers->get('referer');
+                $request->getSession()->getFlashBag()->add('notice', 'Cette Ville contient des Biens! Vous ne pouvez donc pas la supprimmer');
+                return new RedirectResponse($referer);
+            }else{
+                $villesRepository->remove($ville, true);
             }
-            $villesRepository->remove($ville, true);
         }
 
         return $this->redirectToRoute('app_ville_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/delete_type/{id}', name: 'app_type_delete', methods: ['POST'])]
+    public function delete_type(Request $request, TypeBien $typeBien, BiensRepository $biensRepository, TypeBienRepository $typeBienRepository): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        if ($this->isCsrfTokenValid('delete'.$typeBien->getId(), $request->request->get('_token'))) {
+            $biens = $biensRepository->findBy(['ville'=>$typeBien]);
+            if (isset($biens) and !empty($biens)){
+                $referer = $request->headers->get('referer');
+                $request->getSession()->getFlashBag()->add('notice', 'Ce Type contient des Biens! Vous ne pouvez donc pas le supprimmer');
+                return new RedirectResponse($referer);
+            }else{
+                $typeBienRepository->remove($typeBien, true);
+            }
+        }
+
+        return $this->redirectToRoute('app_type_index', [], Response::HTTP_SEE_OTHER);
     }
 }

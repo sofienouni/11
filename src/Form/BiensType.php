@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Biens;
+use App\Entity\TypeBien;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -19,14 +21,6 @@ class BiensType extends AbstractType
             ->add('description',CKEditorType::class)
             ->add('pieces')
             ->add('surface')
-            ->add('etat', ChoiceType::class, [
-                'choices' => [
-                    'Exellent Etat' => 'Exellent Etat',
-                    'Bon Etat' => 'Bon Etat',
-                    'Etat Moyen' => 'Etat Moyen',
-                    'Mauvais Etat' => 'Mauvais Etat',
-                ],
-            ])
             ->add('etage')
             ->add('chauffage')
             ->add('climatisation')
@@ -47,22 +41,15 @@ class BiensType extends AbstractType
                 ],
             ])
             ->add('neuf')
-            ->add('typeBien', ChoiceType::class, [
+            ->add('typebien', EntityType::class, [
+                'placeholder' => 'Type Du Bien',
                 'attr' => array(
-                    'class' => 'chosen-select',
-                    'data-placeholder' => 'Type Du Bien',
+                    'data-placeholder' => 'Type du bien',
                 ),
-                'choices' => [
-                    'Appartement' => 'Appartement',
-                    'Maison' => 'Maison',
-                    'Terrain' => 'Terrain',
-                    'Villa' => 'Villa',
-                    'Commerce' => 'Commerce',
-                    'Garage/Parking' => 'Garage/Parking',
-                    'Immeuble' => 'Immeuble',
-                    'Bureau' => 'Bureau',
-                    'Cave' => 'Cave',
-                ],])
+                'class' => TypeBien::class,
+                'required' => false
+
+            ])
             ->add('prix')
             ->add('ville')
             ->add('photo', FileType::class, [

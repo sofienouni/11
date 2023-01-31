@@ -15,6 +15,7 @@ use App\Form\VentesType;
 use App\Repository\BiensRepository;
 use App\Repository\MessagesRepository;
 use App\Repository\TextesRepository;
+use App\Repository\TypeBienRepository;
 use App\Repository\VentesRepository;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
@@ -41,7 +42,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(BiensRepository $biensRepository, Request $request): Response
+    public function index(BiensRepository $biensRepository, TypeBienRepository $typeBienRepository, Request $request): Response
     {
 
         $villes = $this->manager->getRepository(Villes::class)->findAll();
@@ -51,6 +52,18 @@ class HomeController extends AbstractController
         $session = $this->requestStack->getSession();
         $ids = $session->get('selection',[]);
         $SearchParams = null;
+        $type_biens = $typeBienRepository->findAll();
+        foreach ($type_biens as $typeBien){
+            if (strtolower($typeBien->getNom()) == 'appartement'){
+                $appartement = $typeBien;
+            }elseif (strtolower($typeBien->getNom()) == 'villa'){
+                $villa = $typeBien;
+            }elseif (strtolower($typeBien->getNom()) == 'terrain'){
+                $terrain = $typeBien;
+            }elseif (strtolower($typeBien->getNom()) == 'commerce'){
+                $commerce = $typeBien;
+            }
+        }
         if ($form->isSubmitted() && $form->isValid()) {
             $SearchParams = $form->getData();
             $queryBuilder = $biensRepository->findAllFieldPaginated($SearchParams);
@@ -58,22 +71,22 @@ class HomeController extends AbstractController
             $vente = [];
             $location = [];
             $value['type'] = 0;
-            $value['type_bien'] = 'Appartement';
+            $value['type_bien'] = $appartement;
             $vente['Appartement'] = $biensRepository->findByExampleField($value);
             $value['type'] = 1;
             $location['Appartement'] = $biensRepository->findByExampleField($value);
             $value['type'] = 0;
-            $value['type_bien'] = 'Villa';
+            $value['type_bien'] = $villa;
             $vente['Villa'] = $biensRepository->findByExampleField($value);
             $value['type'] = 1;
             $location['Villa'] = $biensRepository->findByExampleField($value);
             $value['type'] = 0;
-            $value['type_bien'] = 'Terrain';
+            $value['type_bien'] = $terrain;
             $vente['Terrain'] = $biensRepository->findByExampleField($value);
             $value['type'] = 1;
             $location['Terrain'] = $biensRepository->findByExampleField($value);
             $value['type'] = 0;
-            $value['type_bien'] = 'Commerce';
+            $value['type_bien'] = $commerce;
             $vente['Commerce'] = $biensRepository->findByExampleField($value);
             $value['type'] = 1;
             $location['Commerce'] = $biensRepository->findByExampleField($value);

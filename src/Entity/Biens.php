@@ -22,9 +22,6 @@ class Biens
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $pieces = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $etat = null;
-
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $etage = null;
 
@@ -61,9 +58,6 @@ class Biens
     #[ORM\Column(nullable: true)]
     private ?bool $neuf = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $typeBien = null;
-
     #[ORM\ManyToOne]
     private ?Villes $ville = null;
 
@@ -78,6 +72,10 @@ class Biens
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $ref = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TypeBien $typebien = null;
 
     public function __construct()
     {
@@ -110,18 +108,6 @@ class Biens
     public function setPieces(?string $pieces): self
     {
         $this->pieces = $pieces;
-
-        return $this;
-    }
-
-    public function getEtat(): ?string
-    {
-        return $this->etat;
-    }
-
-    public function setEtat(?string $etat): self
-    {
-        $this->etat = $etat;
 
         return $this;
     }
@@ -269,19 +255,7 @@ class Biens
 
         return $this;
     }
-
-    public function getTypeBien(): ?string
-    {
-        return $this->typeBien;
-    }
-
-    public function setTypeBien(?string $typeBien): self
-    {
-        $this->typeBien = $typeBien;
-
-        return $this;
-    }
-
+    
     public function getVille(): ?Villes
     {
         return $this->ville;
@@ -356,6 +330,18 @@ class Biens
     public function setRef(?string $ref): self
     {
         $this->ref = $ref;
+
+        return $this;
+    }
+
+    public function getTypebien(): ?TypeBien
+    {
+        return $this->typebien;
+    }
+
+    public function setTypebien(?TypeBien $typebien): self
+    {
+        $this->typebien = $typebien;
 
         return $this;
     }

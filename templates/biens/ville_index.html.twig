@@ -258,6 +258,16 @@
         });
     </script>
     <div class="container-xl">
+        {% if app.session.getFlashBag().peek('notice') is not empty %}
+            {% for message in app.session.getFlashBag().get('notice') %}
+                <script>
+                    alert("{{ message }}");
+                </script>
+            {% endfor %}
+        {% endif %}
+
+
+
         <div class="table-responsive">
             <div class="table-wrapper">
                 <div class="table-title">

@@ -103,7 +103,7 @@ class BiensRepository extends ServiceEntityRepository
                 $criteria->where($expressionBuilder->eq('type', $type));
             }
             if ($typeBien != 'Types Du Bien' && !empty($typeBien)) {
-                $criteria->Andwhere($expressionBuilder->in('typeBien', $typeBien));
+                $criteria->Andwhere($expressionBuilder->in('typebien', $typeBien));
             }
 
             if ($villes != 'Choisir une ville' && !empty($villes)) {
@@ -214,7 +214,7 @@ class BiensRepository extends ServiceEntityRepository
         $criteria->where($expressionBuilder->eq('type', $type));
         if ($values != null) {
             if ($typeBien != 'Types Du Bien' && !empty($typeBien)) {
-                $criteria->Andwhere($expressionBuilder->in('typeBien', $typeBien));
+                $criteria->Andwhere($expressionBuilder->in('typebien', $typeBien));
             }
             if ($villes != 'Choisir une ville' && !empty($villes)) {
                 $criteria->Andwhere($expressionBuilder->in('ville', $ville_id));
@@ -254,7 +254,7 @@ class BiensRepository extends ServiceEntityRepository
     public function findByExampleField($value = null): array
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.typeBien = :val')
+            ->andWhere('b.typebien = :val')
             ->andWhere('b.type = :val1')
             ->setParameter('val', $value['type_bien'])
             ->setParameter('val1',$value['type'])

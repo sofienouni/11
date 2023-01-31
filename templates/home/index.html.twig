@@ -38,19 +38,18 @@
 
 <section class="grids-4" id="properties">
     <div id="grids4-block" class="py-5">
+        <div style="float: right;">
+            <label for="trier">Trier Par</label>
+            <select class="form-select" id="trier" aria-label="Default select example" >
+                <option selected>Trier Par</option>
+                <option value="prix+">Prix croissant</option>
+                <option value="prix-">Prix décroissant</option>
+                <option value="surface+">Surface croissante</option>
+                <option value="surface-">Surface décroissante</option>
+                <option value="new">Nouveautés</option>
+            </select>
+        </div>
         <div class="container py-md-3">
-            <div style="float: right;">
-                <label for="trier">Trier Par</label>
-                <select class="form-select" id="trier" aria-label="Default select example" >
-                    <option selected>Trier Par</option>
-                    <option value="prix+">Prix croissant</option>
-                    <option value="prix-">Prix décroissant</option>
-                    <option value="surface+">Surface croissante</option>
-                    <option value="surface-">Surface décroissante</option>
-                    <option value="new">Nouveautés</option>
-                </select>
-            </div>
-
             <div class="row mt-5 pt-3">
             {% for bien in pager %}
                 {% set image = bien.images | first %}
