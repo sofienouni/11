@@ -25,10 +25,7 @@
                             </div>
                             <div class="form-top">
                                 {{ form_row(form.pieces) }}
-                                {{ form_row(form.surface) }}
-                            </div>
-                            <div class="form-top">
-                                {{ form_row(form.neuf) }}
+                                {{ form_row(form.surface, {'attr': {'style': 'display:none'}}) }}
                             </div>
                             <button type="submit" class="btn">Rechercher</button>
                     </div>
@@ -36,7 +33,7 @@
                 </div>
             </div>
         </div>
-        {{ form_end(form) }}
+        {{ form_end(form, {'render_rest': false}) }}
     </section>
 
 
@@ -55,6 +52,7 @@
         </div>
         <div class="container py-md-3">
             <div class="row mt-5 pt-3">
+            {% if pager|default%}
             {% for bien in pager %}
                 {% set image = bien.images | first %}
                 <div class="grids4-info  col-lg-4 col-md-6">
@@ -96,12 +94,18 @@
                     </div>
                 </div>
             {% endfor %}
-            {{ pagerfanta(pager) }}
+                {% else %}
+                Aucun Résultat Trouvé! Essayez d'agrandir votre recherche.
+                {% endif %}
+                {% if pager|default%}
+                    {{ pagerfanta(pager) }}
+                {% endif %}
             </div>
         </div>
     </div>
 </section>
     <script type="application/javascript" async defer>
+
         {#const route = "{{ path('blog_show', {slug: 'my-blog-post'})|escape('js') }}";#}
         $('#trier').on('change', function() {
             $('#biensearch_params_trie').val($("#trier").val());
@@ -124,7 +128,7 @@
                 encode: true
             })
                 .done(function(data) {
-                    console.log(data);
+
                 })
         });
         $(document).on("click",'.remove_selection',function () {
@@ -138,8 +142,42 @@
                 encode: true
             })
                 .done(function(data) {
-                    console.log(data);
+
                 })
+        });
+
+        $(document).on("change",'#biensearch_params_type',function () {
+            $('#biensearch_params_prix').val();
+            $('#biensearch_params_prix').empty(); //remove all child nodes
+            if ($(this).val() === 'A Vendre'){
+                var liste = {{ listes_prix_vente|json_encode|raw }};
+            }else{
+                var liste = {{ listes_prix_location|json_encode|raw }};
+            }
+            var newOption = $('<option value="">Prix</option>');
+            $('#biensearch_params_prix').append(newOption);
+            $.each(liste, function(key, value) {
+                var newOption = $('<option value="'+key+'">'+value+'</option>');
+                $('#biensearch_params_prix').append(newOption);
+            });
+
+            $('#biensearch_params_prix').trigger("chosen:updated");
+        });
+
+        $(document).on("change",'#biensearch_params_typeBien',function () {
+            console.log('ici');
+
+        });
+        $(function() {
+        $('#biensearch_params_typeBien').change(function(e) {
+            var selected = $(e.target).val();
+            if(jQuery.inArray('3', selected) !== -1){
+                $('#biensearch_params_surface').show();
+            }
+            if(jQuery.inArray('3', selected) === -1){
+                $('#biensearch_params_surface').hide();
+            }
+        });
         });
 
     </script>

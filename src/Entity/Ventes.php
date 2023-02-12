@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\VentesRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VentesRepository::class)]
 class Ventes
@@ -24,13 +25,18 @@ class Ventes
     private ?string $email = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/[0-9]{8}/',
+        message: 'Your name cannot contain a number'
+    )]
+    #[Assert\Length(
+        min: 8,
+        max: 8,
+        minMessage: 'Your first name must be at least {{ limit }} characters long',
+        maxMessage: 'Your first name cannot be longer than {{ limit }} characters',
+    )]
     private ?string $telephone = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $type = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $ville = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $message = null;
@@ -43,6 +49,12 @@ class Ventes
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $operation = null;
+
+    #[ORM\ManyToOne]
+    private ?TypeBien $typebien = null;
+
+    #[ORM\ManyToOne]
+    private ?Villes $ville = null;
 
     public function getId(): ?int
     {
@@ -97,29 +109,6 @@ class Ventes
         return $this;
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(?string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getVille(): ?string
-    {
-        return $this->ville;
-    }
-
-    public function setVille(?string $ville): self
-    {
-        $this->ville = $ville;
-
-        return $this;
-    }
 
     public function getMessage(): ?string
     {
@@ -165,6 +154,30 @@ class Ventes
     public function setOperation(?string $operation): self
     {
         $this->operation = $operation;
+
+        return $this;
+    }
+
+    public function getTypebien(): ?TypeBien
+    {
+        return $this->typebien;
+    }
+
+    public function setTypebien(?TypeBien $typebien): self
+    {
+        $this->typebien = $typebien;
+
+        return $this;
+    }
+
+    public function getVille(): ?Villes
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?Villes $ville): self
+    {
+        $this->ville = $ville;
 
         return $this;
     }

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Messages;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -49,13 +50,45 @@ class MessagesRepository extends ServiceEntityRepository
         ;
     }
 
-//    public function findOneBySomeField($value): ?Messages
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @return Messages[] Returns an array of Biens objects
+     */
+    public function findAllFieldPaginated($values = null): QueryBuilder
+    {
+
+        if ($values != null) {
+            $nom = $values->getNom();
+            $prenom = $values->getPrenom();
+            $telephone = $values->getTelephone();
+            $ref = $values->getRef();
+        }
+
+
+        $queryBuilder = $this->createQueryBuilder('m')->orderBy('m.id','desc');
+        $expressionBuilder = Criteria::expr();
+        $criteria = new Criteria();
+        if ($values != null) {
+            if ($nom != null){
+                $criteria->where($expressionBuilder->eq('nom', $nom));
+            }
+
+            if ($prenom != null && !empty($prenom)) {
+                $criteria->Andwhere($expressionBuilder->eq('prenom', $prenom));
+            }
+
+            if ($telephone != null && !empty($telephone)) {
+                $criteria->Andwhere($expressionBuilder->eq('telephone', $telephone));
+            }
+
+            if ($ref != null && !empty($ref)) {
+                $criteria->Andwhere($expressionBuilder->eq('ref', $ref));
+            }
+        }
+
+        $queryBuilder->addCriteria($criteria);
+
+
+        return $queryBuilder;
+
+    }
 }

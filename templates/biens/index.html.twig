@@ -270,6 +270,17 @@
                         </div>
                     </div>
                 </div>
+                {{ form_start(form) }}
+                <div class="blog-search form d-flex search-form">
+                    {{ form_row(form.ref, {'attr': {'class': 'form-control mr-sm-2'}}) }}
+
+                </div>
+                <div class="blog-search form d-flex search-form">
+                    {{ form_row(form.ville) }}
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
+                </div>
+
+                {{ form_end(form, {'render_rest': false}) }}
                 <table class="table table-striped table-hover">
                     <thead>
                     <tr>

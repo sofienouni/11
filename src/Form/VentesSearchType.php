@@ -3,15 +3,15 @@
 namespace App\Form;
 
 use App\Entity\TypeBien;
-use App\Entity\Ventes;
+use App\Entity\VentesSearch;
+use App\Entity\Villes;
+use App\Repository\PrixRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VentesType extends AbstractType
+class VentesSearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -20,64 +20,58 @@ class VentesType extends AbstractType
                 'attr' => array(
                     'placeholder' => 'Nom',
                 ),
-                'required'   => true,
                 'label' => false
             ])
             ->add('prenom', null, [
                 'attr' => array(
                     'placeholder' => 'Prénom',
                 ),
-                'required'   => true,
-                'label' => false
-            ])
-            ->add('email', EmailType::class, [
-                'attr' => array(
-                    'placeholder' => 'Email',
-                ),
-                'required'   => true,
                 'label' => false
             ])
             ->add('telephone', null, [
                 'attr' => array(
                     'placeholder' => 'Téléphone',
                 ),
-                'required'   => true,
                 'label' => false
             ])
-            ->add('operation', ChoiceType::class, [
-                'choices' => [
-                    'A Louer' => 'A Louer',
-                    'A Vendre' => 'A Vendre',
-                ],
-                'label' => false])
-            ->add('typebien', EntityType::class, [
-                'placeholder' => 'Type Du Bien',
+            ->add('ref', null, [
                 'attr' => array(
-                    'data-placeholder' => 'Type du bien',
+                    'placeholder' => 'Référence',
+                ),
+                'label' => false
+            ])
+            ->add('typeBien', EntityType::class, [
+                'placeholder' => 'Type Du Bien',
+                'label' => false,
+                'attr' => array(
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Type Du Bien',
                 ),
                 'class' => TypeBien::class,
+                'multiple' => true,
                 'required' => false
 
             ])
-            ->add('ville', null, [
+            ->add('ville', EntityType::class, [
+                'placeholder' => 'Choisir une ville',
+                'label' => false,
                 'attr' => array(
-                    'placeholder' => 'Ville',
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Choisir une ville',
                 ),
-                'label' => false
-            ])
-            ->add('message', null, [
-                'attr' => array(
-                    'placeholder' => 'Laisser votre message ici',
-                ),
-                'label' => false
+                'class' => Villes::class,
+                'multiple' => true,
+                'required' => false
+
             ])
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Ventes::class,
+            'data_class' => VentesSearch::class,
         ]);
     }
 }

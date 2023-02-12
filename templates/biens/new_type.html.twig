@@ -3,7 +3,7 @@
 {% block title %}Nouveau{% endblock %}
 
 {% block body %}
-    <h1 style="text-align: center;">Ajouter Une Ville</h1>
+    <h1 style="text-align: center;">Ajouter Un Type De Bien</h1>
 
     {{ form_start(form) }}
     <div id="addEmployeeModal" >
@@ -23,7 +23,7 @@
                         <hr>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+                        <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
                         <a href="{{ path('app_type_index') }}" class="btn btn-default" >Annuler</a>
                     </div>
                 </form>

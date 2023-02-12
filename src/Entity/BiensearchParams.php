@@ -16,11 +16,9 @@ class BiensearchParams
 
     private ?string $prix = null;
 
-    private ?string $pieces = null;
+    private ?array $pieces = [];
 
     private ?string $surface = null;
-
-    private ?string $neuf = null;
 
     private ?string $ref = null;
 
@@ -79,12 +77,13 @@ class BiensearchParams
         return $this;
     }
 
-    public function getPieces(): ?string
+    public function getPieces(): ?array
     {
-        return $this->pieces;
+        $pieces = $this->pieces;
+        return array_unique($pieces);
     }
 
-    public function setPieces(?string $pieces): self
+    public function setPieces(?array $pieces): self
     {
         $this->pieces = $pieces;
 
@@ -99,18 +98,6 @@ class BiensearchParams
     public function setSurface(?string $surface): self
     {
         $this->surface = $surface;
-
-        return $this;
-    }
-
-    public function getNeuf(): ?string
-    {
-        return $this->neuf;
-    }
-
-    public function setNeuf(?string $neuf): self
-    {
-        $this->neuf = $neuf;
 
         return $this;
     }

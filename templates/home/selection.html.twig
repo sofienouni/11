@@ -20,7 +20,7 @@
                                 {{ form_row(form.typeBien) }}
                             </div>
                             <div class="form-top">
-                                {{ form_row(form.ville) }}
+                                {{ form_row(form.ville,{ 'attr': {'style': 'height: auto;'} }) }}
                                 {{ form_row(form.prix) }}
                             </div>
                             <div class="form-top">
@@ -55,13 +55,13 @@
                         <button class="nav-link active" id="appart-tab" data-bs-toggle="tab" data-bs-target="#appart" type="button" role="tab" aria-controls="appart" aria-selected="true">Appartements</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="villa-tab" data-bs-toggle="tab" data-bs-target="#villa" type="button" role="tab" aria-controls="villa" aria-selected="false">Villas</button>
+                        <button class="nav-link" id="villa-tab" data-bs-toggle="tab" data-bs-target="#villa" type="button" role="tab" aria-controls="villa" aria-selected="false">Villa / Maison</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="terrain-tab" data-bs-toggle="tab" data-bs-target="#terrain" type="button" role="tab" aria-controls="terrain" aria-selected="true">Terrains</button>
+                        <button class="nav-link" id="terrain-tab" data-bs-toggle="tab" data-bs-target="#terrain" type="button" role="tab" aria-controls="terrain" aria-selected="true">Terrain</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="commerce-tab" data-bs-toggle="tab" data-bs-target="#commerce" type="button" role="tab" aria-controls="commerce" aria-selected="false">Commerces</button>
+                        <button class="nav-link" id="commerce-tab" data-bs-toggle="tab" data-bs-target="#commerce" type="button" role="tab" aria-controls="commerce" aria-selected="false">Local Commercial</button>
                     </li>
                 </ul>
             </div>
@@ -71,13 +71,13 @@
                         <button class="nav-link" id="lappart-tab" data-bs-toggle="tab" data-bs-target="#lappart" type="button" role="tab" aria-controls="lappart" aria-selected="false">Appartements</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="lvilla-tab" data-bs-toggle="tab" data-bs-target="#lvilla" type="button" role="tab" aria-controls="lvilla" aria-selected="false">Villas</button>
+                        <button class="nav-link" id="lvilla-tab" data-bs-toggle="tab" data-bs-target="#lvilla" type="button" role="tab" aria-controls="lvilla" aria-selected="false">Villa / Maison</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="lterrain-tab" data-bs-toggle="tab" data-bs-target="#lterrain" type="button" role="tab" aria-controls="lterrain" aria-selected="true">Terrains</button>
+                        <button class="nav-link" id="lterrain-tab" data-bs-toggle="tab" data-bs-target="#lterrain" type="button" role="tab" aria-controls="lterrain" aria-selected="true">Terrain</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="lcommerce-tab" data-bs-toggle="tab" data-bs-target="#lcommerce" type="button" role="tab" aria-controls="lcommerce" aria-selected="false">Commerces</button>
+                        <button class="nav-link" id="lcommerce-tab" data-bs-toggle="tab" data-bs-target="#lcommerce" type="button" role="tab" aria-controls="lcommerce" aria-selected="false">Local Commercial</button>
                     </li>
                 </ul>
             </div>
@@ -517,6 +517,22 @@
                     console.log(data);
                 })
         });
+        $(document).on("change",'#bien_search_type',function () {
+            $('#bien_search_prix').val();
+            $('#bien_search_prix').empty(); //remove all child nodes
+            if ($(this).val() === 'A Vendre'){
+                var liste = {{ listes_prix_vente|json_encode|raw }};
+            }else{
+                var liste = {{ listes_prix_location|json_encode|raw }};
+            }
+            var newOption = $('<option value="">Prix</option>');
+            $('#bien_search_prix').append(newOption);
+            $.each(liste, function(key, value) {
+                var newOption = $('<option value="'+key+'">'+value+'</option>');
+                $('#bien_search_prix').append(newOption);
+            });
 
+            $('#bien_search_prix').trigger("chosen:updated");
+        });
     </script>
 {% endblock %}

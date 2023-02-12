@@ -14,13 +14,16 @@
 
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset("assets/css/style-starter.css") }}">
+            <link rel="stylesheet" href="{{ asset("assets/css/style.css") }}">
+            <link rel="stylesheet" href="{{ asset("assets/css/prism.css") }}">
+            <link rel="stylesheet" href="{{ asset("assets/css/chosen.css") }}">
         {% endblock %}
 
 
     </head>
     <body>
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
+    {% for message in app.flashes('Failed') %}
+        <div class="alert alert-danger">
             {{ message }}
         </div>
     {% endfor %}
@@ -159,7 +162,11 @@
         </section>
         {% block javascripts %}
             <!-- // grids block 5 -->
-            <script src="{{ asset("assets/js/jquery-3.3.1.min.js") }}"></script>
+            <script src="{{ asset("assets/js/jquery-3.6.3.js") }}"></script>
+            <script src="{{ asset("assets/js/chosen.jquery.js") }}"></script>
+            <script src="{{ asset("assets/js/prism.js") }}"></script>
+            <script src="{{ asset("assets/js/init.js") }}"></script>
+            <script src="{{ asset('assets/js/bootstrap.bundle.js') }}" defer></script>
             <!-- //footer-28 block -->
 
             <script>

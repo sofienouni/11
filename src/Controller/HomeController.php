@@ -14,6 +14,7 @@ use App\Form\MessagesType;
 use App\Form\VentesType;
 use App\Repository\BiensRepository;
 use App\Repository\MessagesRepository;
+use App\Repository\PrixRepository;
 use App\Repository\TextesRepository;
 use App\Repository\TypeBienRepository;
 use App\Repository\VentesRepository;
@@ -42,10 +43,18 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(BiensRepository $biensRepository, TypeBienRepository $typeBienRepository, Request $request): Response
+    public function index(BiensRepository $biensRepository, TypeBienRepository $typeBienRepository, PrixRepository $prixRepository, Request $request): Response
     {
 
         $villes = $this->manager->getRepository(Villes::class)->findAll();
+        $liste_location = $prixRepository->findBy(['type' => 1],['min'=>'ASC']);
+        foreach ($liste_location as $liste){
+            $listes_prix_location[$liste->getId()] = $liste->getMin(). ' - ' . $liste->getMax();
+        }
+        $liste_vente = $prixRepository->findBy(['type' => 0],['min'=>'ASC']);
+        foreach ($liste_vente as $liste){
+            $listes_prix_vente[] = $liste->getMin(). ' - ' . $liste->getMax();
+        }
         $biensearch = new BienSearch();
         $form = $this->createForm(BienSearchType::class, $biensearch);
         $form->handleRequest($request);
@@ -53,17 +62,14 @@ class HomeController extends AbstractController
         $ids = $session->get('selection',[]);
         $SearchParams = null;
         $type_biens = $typeBienRepository->findAll();
-        foreach ($type_biens as $typeBien){
-            if (strtolower($typeBien->getNom()) == 'appartement'){
-                $appartement = $typeBien;
-            }elseif (strtolower($typeBien->getNom()) == 'villa'){
-                $villa = $typeBien;
-            }elseif (strtolower($typeBien->getNom()) == 'terrain'){
-                $terrain = $typeBien;
-            }elseif (strtolower($typeBien->getNom()) == 'commerce'){
-                $commerce = $typeBien;
-            }
-        }
+        if (isset($type_biens[0]))
+            $appartement = $type_biens[0];
+        if (isset($type_biens[1]))
+            $villa = $type_biens[1];
+        if (isset($type_biens[2]))
+            $terrain = $type_biens[2];
+        if (isset($type_biens[3]))
+            $commerce = $type_biens[3];
         if ($form->isSubmitted() && $form->isValid()) {
             $SearchParams = $form->getData();
             $queryBuilder = $biensRepository->findAllFieldPaginated($SearchParams);
@@ -94,6 +100,8 @@ class HomeController extends AbstractController
                 'ventes' => $vente,
                 'ids' => $ids,
                 'location' => $location,
+                'listes_prix_location' => $listes_prix_location,
+                'listes_prix_vente' => $listes_prix_vente,
                 'form' => $form->createView(),
             ]);
         }
@@ -110,6 +118,8 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig', [
             'villes' => $villes,
             'ids' => $ids,
+            'listes_prix_location' => $listes_prix_location,
+            'listes_prix_vente' => $listes_prix_vente,
             'form' => $form->createView(),
             'pager' => $pagerfanta,
         ]);
@@ -164,10 +174,19 @@ class HomeController extends AbstractController
 
 
     #[Route('/acheter', name: 'app_acheter')]
-    public function acheter(BiensRepository $biensRepository, Request $request): Response
+    public function acheter(BiensRepository $biensRepository, PrixRepository $prixRepository, Request $request): Response
     {
 
         $villes = $this->manager->getRepository(Villes::class)->findAll();
+        $liste_location = $prixRepository->findBy(['type' => 1],['min'=>'ASC']);
+        foreach ($liste_location as $liste){
+            $listes_prix_location[$liste->getId()] = $liste->getMin(). ' - ' . $liste->getMax();
+        }
+        $liste_vente = $prixRepository->findBy(['type' => 0],['min'=>'ASC']);
+        foreach ($liste_vente as $liste){
+            $listes_prix_vente[] = $liste->getMin(). ' - ' . $liste->getMax();
+        }
+        $vente = null;
         $biensearch = new BiensearchParams();
         $form = $this->createForm(BiensearchParamsType::class, $biensearch);
         $form->handleRequest($request);
@@ -175,7 +194,8 @@ class HomeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $SearchParams = $form->getData();
         }
-        $vente = 0;
+        if (!isset($SearchParams) || $SearchParams->getType() === null)
+            $vente = 0;
 
         $queryBuilder = $biensRepository->findAllFieldPaginatedwithparams($SearchParams,$vente);
         $adapter = new QueryAdapter($queryBuilder);
@@ -189,16 +209,27 @@ class HomeController extends AbstractController
         return $this->render('home/acheter.html.twig', [
             'villes' => $villes,
             'ids' => $ids,
+            'listes_prix_location' => $listes_prix_location,
+            'listes_prix_vente' => $listes_prix_vente,
             'form' => $form->createView(),
             'pager' => $pagerfanta,
         ]);
     }
 
     #[Route('/louer', name: 'app_louer')]
-    public function louer(BiensRepository $biensRepository, Request $request): Response
+    public function louer(BiensRepository $biensRepository, PrixRepository $prixRepository, Request $request): Response
     {
 
         $villes = $this->manager->getRepository(Villes::class)->findAll();
+        $liste_location = $prixRepository->findBy(['type' => 1],['min'=>'ASC']);
+        foreach ($liste_location as $liste){
+            $listes_prix_location[$liste->getId()] = $liste->getMin(). ' - ' . $liste->getMax();
+        }
+        $liste_vente = $prixRepository->findBy(['type' => 0],['min'=>'ASC']);
+        foreach ($liste_vente as $liste){
+            $listes_prix_vente[] = $liste->getMin(). ' - ' . $liste->getMax();
+        }
+        $vente = null;
         $biensearch = new BiensearchParams();
         $form = $this->createForm(BiensearchParamsType::class, $biensearch);
         $form->handleRequest($request);
@@ -206,7 +237,9 @@ class HomeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $SearchParams = $form->getData();
         }
-        $vente = 1;
+        if (!isset($SearchParams) || $SearchParams->getType() === null)
+            $vente = 1;
+
 
         $queryBuilder = $biensRepository->findAllFieldPaginatedwithparams($SearchParams,$vente);
         $adapter = new QueryAdapter($queryBuilder);
@@ -220,6 +253,8 @@ class HomeController extends AbstractController
         return $this->render('home/acheter.html.twig', [
             'villes' => $villes,
             'ids' => $ids,
+            'listes_prix_location' => $listes_prix_location,
+            'listes_prix_vente' => $listes_prix_vente,
             'form' => $form->createView(),
             'pager' => $pagerfanta,
         ]);

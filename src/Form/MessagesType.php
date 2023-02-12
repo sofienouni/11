@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Messages;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,7 +19,7 @@ class MessagesType extends AbstractType
             ->add('prenom', null, [
                 'required'   => true,
             ])
-            ->add('email')
+            ->add('email', EmailType::class)
             ->add('telephone', null, [
                 'required'   => true,
             ])

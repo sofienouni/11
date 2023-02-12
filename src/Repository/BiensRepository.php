@@ -63,7 +63,7 @@ class BiensRepository extends ServiceEntityRepository
                 }
             }
             $prix = $values->getPrix();
-            if ($prix != 'Prix/DT'){
+            if ($prix != 'Prix/DT' && $prix != null){
                 preg_match_all('!\d+!', $prix, $matches);
                 if (isset($matches[0][1])){
                     $prix_min = $matches[0][0];
@@ -99,7 +99,7 @@ class BiensRepository extends ServiceEntityRepository
         $expressionBuilder = Criteria::expr();
         $criteria = new Criteria();
         if ($values != null) {
-            if ($type == 1 || $type == 0){
+            if ($type != null && ($type == 1 || $type == 0)){
                 $criteria->where($expressionBuilder->eq('type', $type));
             }
             if ($typeBien != 'Types Du Bien' && !empty($typeBien)) {
@@ -109,7 +109,7 @@ class BiensRepository extends ServiceEntityRepository
             if ($villes != 'Choisir une ville' && !empty($villes)) {
                 $criteria->Andwhere($expressionBuilder->in('ville', $ville_id));
             }
-            if ($prix != 'Prix/DT') {
+            if ($prix != 'Prix/DT' && $prix != null) {
                 $criteria->Andwhere($expressionBuilder->gte('prix', $prix_min));
                 if (isset($matches[0][1])) {
                     $criteria->Andwhere($expressionBuilder->lte('prix', $prix_max));
@@ -121,7 +121,7 @@ class BiensRepository extends ServiceEntityRepository
         }
 
         $queryBuilder->addCriteria($criteria);
-//        dd($queryBuilder);
+
 
         return $queryBuilder;
 
@@ -151,7 +151,7 @@ class BiensRepository extends ServiceEntityRepository
                 }
             }
             $prix = $values->getPrix();
-            if ($prix != 'Prix/DT') {
+            if ($prix != 'Prix/DT' && $prix != null) {
                 preg_match_all('!\d+!', $prix, $matches);
                 if (isset($matches[0][1])) {
                     $prix_min = $matches[0][0];
@@ -186,7 +186,6 @@ class BiensRepository extends ServiceEntityRepository
                     $surface_max = null;
                 }
             }
-            $neuf = $values->getNeuf();
             $ref = $values->getRef();
             $order = $values->getTrie();
         }
@@ -219,14 +218,14 @@ class BiensRepository extends ServiceEntityRepository
             if ($villes != 'Choisir une ville' && !empty($villes)) {
                 $criteria->Andwhere($expressionBuilder->in('ville', $ville_id));
             }
-            if ($prix != 'Prix/DT') {
+            if ($prix != 'Prix/DT' && $prix != null) {
                 $criteria->Andwhere($expressionBuilder->gte('prix', $prix_min));
                 if (isset($matches[0][1])) {
                     $criteria->Andwhere($expressionBuilder->lte('prix', $prix_max));
                 }
             }
             if ($pieces != 'Nombre de Pièces') {
-                $criteria->Andwhere($expressionBuilder->eq('pieces', $pieces));
+                $criteria->Andwhere($expressionBuilder->in('pieces', $pieces));
             }
 
             if ($surface != 'Surfaces m2') {
@@ -235,9 +234,7 @@ class BiensRepository extends ServiceEntityRepository
                     $criteria->Andwhere($expressionBuilder->lte('surface', $surface_max));
                 }
             }
-            if ($neuf != 'Bien neuf') {
-                $criteria->Andwhere($expressionBuilder->eq('neuf', $neuf));
-            }
+
             if ($ref != null){
                 $criteria->Andwhere($expressionBuilder->eq('ref', $ref));
             }
@@ -253,16 +250,29 @@ class BiensRepository extends ServiceEntityRepository
      */
     public function findByExampleField($value = null): array
     {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.typebien = :val')
-            ->andWhere('b.type = :val1')
-            ->setParameter('val', $value['type_bien'])
-            ->setParameter('val1',$value['type'])
-            ->orderBy('b.id', 'DESC')
-            ->setMaxResults(6)
-            ->getQuery()
-            ->getResult()
-        ;
+        if (isset($value['current'])) {
+            return $this->createQueryBuilder('b')
+                ->andWhere('b.typebien = :val')
+                ->andWhere('b.type = :val1')
+                ->andWhere('b.id != :val2')
+                ->setParameter('val', $value['type_bien'])
+                ->setParameter('val1', $value['type'])
+                ->setParameter('val2', $value['current'])
+                ->orderBy('b.id', 'DESC')
+                ->setMaxResults(6)
+                ->getQuery()
+                ->getResult();
+        }else{
+            return $this->createQueryBuilder('b')
+                ->andWhere('b.typebien = :val')
+                ->andWhere('b.type = :val1')
+                ->setParameter('val', $value['type_bien'])
+                ->setParameter('val1', $value['type'])
+                ->orderBy('b.id', 'DESC')
+                ->setMaxResults(6)
+                ->getQuery()
+                ->getResult();
+        }
     }
 
 }

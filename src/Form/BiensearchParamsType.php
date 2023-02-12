@@ -3,17 +3,26 @@
 namespace App\Form;
 
 use App\Entity\BiensearchParams;
+use App\Entity\Prix;
 use App\Entity\TypeBien;
 use App\Entity\Villes;
+use App\Repository\PrixRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BiensearchParamsType extends AbstractType
 {
+
+    private $prixRepository;
+    public function __construct(PrixRepository $prixRepository){
+        $this->prixRepository = $prixRepository;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -29,7 +38,7 @@ class BiensearchParamsType extends AbstractType
                 'label' => false,
                 'attr' => array(
                     'class' => 'chosen-select',
-                    'data-placeholder' => 'Choisir une ville',
+                    'data-placeholder' => 'Choisir Un Type',
                 ),
                 'class' => TypeBien::class,
                 'multiple' => true,
@@ -46,20 +55,26 @@ class BiensearchParamsType extends AbstractType
                 ),
                 'required' => false])
             ->add('trie', HiddenType::class)
-            ->add('prix', ChoiceType::class, [
+            ->add('prix', EntityType::class, [
+                'placeholder' => 'Prix',
                 'label' => false,
-                'choices' => [
-                    'Prix/DT' => 'Prix/DT',
-                    '0 - 1000' => '0 - 1000',
-                    '1000 - 2000' => '1000 - 2000',
-                    '2000 - 5000' => '2000 - 5000',
-                    '5000 - 10000' => '5000 - 10000',
-                    '+ 10000' => '+ 10000',
-                ],])
+                'attr' => array(
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Prix',
+                ),
+                'class' => Prix::class,
+                'required' => false,
+                'choices' => $this->prixRepository->findBy(['type' => 1],['min'=>'ASC'])
+            ])
             ->add('pieces', ChoiceType::class, [
                 'label' => false,
+                'multiple' => true,
+                'required' => false,
+                'attr' => array(
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Nombre de Pièces',
+                ),
                 'choices' => [
-                    'Nombre de Pièces' => 'Nombre de Pièces',
                     '1' => '1',
                     '2' => '2',
                     '3' => '3',
@@ -85,14 +100,34 @@ class BiensearchParamsType extends AbstractType
                 ),
                 'label' => false
             ])
-            ->add('neuf', ChoiceType::class, [
-                'label' => false,
-                'choices' => [
-                    'Bien neuf' => 'Bien neuf',
-                    'OUI' => '1',
-                    'NON' => '0',
-                ],])
         ;
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (FormEvent $event) {
+                $form = $event->getForm();
+                // this would be your entity, i.e. SportMeetup
+                $data = $event->getData();
+
+                $type = $data['type'];
+                if ($type == 'A Vendre'){
+                    $type = 0;
+                }else{
+                    $type = 1;
+                }
+                $form->add('prix', EntityType::class, [
+                    'placeholder' => 'Prix',
+                    'label' => false,
+                    'attr' => array(
+                        'class' => 'chosen-select',
+                        'data-placeholder' => 'Prix',
+                    ),
+                    'class' => Prix::class,
+                    'required' => false,
+                    'choices' => $this->prixRepository->findBy(['type' => $type],['min'=>'ASC'])
+
+                ]);
+            }
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

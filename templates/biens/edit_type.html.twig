@@ -17,12 +17,12 @@
                     {{ form_row(form._token) }}
                     <div class="modal-body" style="padding-left: 4rem;padding-right: 4rem;">
                         <div class="form-group">
-                            <label>Nom de la ville</label>
+                            <label>Nom Du Type</label>
                             {{ form_widget(form.nom,{ 'attr': {'style': 'float: right;'} }) }}
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+                        <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
                         <a href="{{ path('app_type_index') }}" class="btn btn-default" >Annuler</a>
                     </div>
                 </form>

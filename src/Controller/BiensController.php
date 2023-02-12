@@ -3,17 +3,26 @@
 namespace App\Controller;
 
 use App\Entity\Biens;
+use App\Entity\BienSearch;
 use App\Entity\Images;
+use App\Entity\Messages;
+use App\Entity\Prix;
 use App\Entity\Textes;
 use App\Entity\TypeBien;
+use App\Entity\VentesSearch;
 use App\Entity\Villes;
+use App\Form\BienSearchType;
 use App\Form\BiensType;
+use App\Form\MessagesType;
+use App\Form\PrixType;
 use App\Form\TextesType;
 use App\Form\TypeBienType;
+use App\Form\VentesSearchType;
 use App\Form\VilleType;
 use App\Repository\BiensRepository;
 use App\Repository\ImagesRepository;
 use App\Repository\MessagesRepository;
+use App\Repository\PrixRepository;
 use App\Repository\TextesRepository;
 use App\Repository\TypeBienRepository;
 use App\Repository\VentesRepository;
@@ -30,12 +39,21 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('/biens')]
 class BiensController extends AbstractController
 {
-    #[Route('/', name: 'app_biens_index', methods: ['GET'])]
+    #[Route('/', name: 'app_biens_index', methods: ['GET','POST'])]
     public function index(BiensRepository $biensRepository, Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $biensearch = new BienSearch();
+        $form = $this->createForm(BienSearchType::class, $biensearch);
+        $form->handleRequest($request);
+        $SearchParams = null;
+        if ($form->isSubmitted()) {
+            $SearchParams = $form->getData();
+            $queryBuilder = $biensRepository->findAllFieldPaginated($SearchParams);
+        }else{
+            $queryBuilder = $biensRepository->findAllFieldPaginated();
+        }
 
-        $queryBuilder = $biensRepository->findAllFieldPaginated();
         $adapter = new QueryAdapter($queryBuilder);
         $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
             $adapter,
@@ -44,6 +62,7 @@ class BiensController extends AbstractController
         );
         return $this->render('biens/index.html.twig', [
             'pager' => $pagerfanta,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -92,11 +111,20 @@ class BiensController extends AbstractController
         ]);
     }
 
-    #[Route('/vente', name: 'app_ventes_index', methods: ['GET'])]
+    #[Route('/vente', name: 'app_ventes_index', methods: ['GET','POST'])]
     public function ventes_index(VentesRepository $ventesRepository, Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-        $queryBuilder = $ventesRepository->findForPager();
+        $ventesearch = new VentesSearch();
+        $form = $this->createForm(VentesSearchType::class, $ventesearch);
+        $form->handleRequest($request);
+        $SearchParams = null;
+        if ($form->isSubmitted()) {
+            $SearchParams = $form->getData();
+            $queryBuilder = $ventesRepository->findAllFieldPaginated($SearchParams);
+        }else{
+            $queryBuilder = $ventesRepository->findForPager();
+        }
         $adapter = new QueryAdapter($queryBuilder);
         $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
             $adapter,
@@ -105,14 +133,45 @@ class BiensController extends AbstractController
         );
         return $this->render('biens/ventes_index.html.twig', [
             'ventes' => $pagerfanta,
+            'form' => $form->createView()
         ]);
     }
 
-    #[Route('/message', name: 'app_messages_index', methods: ['GET'])]
+    #[Route('/prix', name: 'app_prix_index', methods: ['GET','POST'])]
+    public function prix_index(PrixRepository $prixRepository, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $listes_prix_location = $prixRepository->findBy(['type' => 1],['min'=>'ASC']);
+        $listes_prix_vente = $prixRepository->findBy(['type' => 0],['min'=>'ASC']);
+        $prix = new Prix();
+        $form = $this->createForm(PrixType::class, $prix);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $prixRepository->save($prix, true);
+            return $this->redirectToRoute('app_prix_index', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->render('biens/prix_index.html.twig', [
+            'listes_prix_location' => $listes_prix_location,
+            'listes_prix_vente' => $listes_prix_vente,
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/message', name: 'app_messages_index', methods: ['GET','POST'])]
     public function messages_index(MessagesRepository $messagesRepository, Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-        $queryBuilder = $messagesRepository->findForPager();
+        $ventesearch = new VentesSearch();
+        $form = $this->createForm(VentesSearchType::class, $ventesearch);
+        $form->handleRequest($request);
+        $SearchParams = null;
+        if ($form->isSubmitted()) {
+            $SearchParams = $form->getData();
+            $queryBuilder = $messagesRepository->findAllFieldPaginated($SearchParams);
+        }else{
+            $queryBuilder = $messagesRepository->findForPager();
+        }
         $adapter = new QueryAdapter($queryBuilder);
         $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
             $adapter,
@@ -121,6 +180,7 @@ class BiensController extends AbstractController
         );
         return $this->render('biens/messages_index.html.twig', [
             'messages' => $pagerfanta,
+            'form' => $form->createView()
         ]);
     }
 
@@ -181,14 +241,37 @@ class BiensController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $villesRepository->save($ville, true);
-
-
+            $exist = $villesRepository->verif_exist(['nom' => $ville->getNom()]);
+            if (isset($exist) && !empty($exist)){
+                $nom = $exist->getNom();
+                $this->addFlash('Failed', "Une autre ville existe au nom de : $nom");
+            }else{
+                $villesRepository->save($ville, true);
+            }
             return $this->redirectToRoute('app_ville_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('biens/new_ville.html.twig', [
             'bien' => $ville,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/newPrix', name: 'app_prix_new', methods: ['GET', 'POST'])]
+    public function new_prix(Request $request, PrixRepository $prixRepository): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $prix = new Prix();
+        $form = $this->createForm(PrixType::class, $prix);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $prixRepository->save($prix, true);
+            return $this->redirectToRoute('app_ville_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('biens/new_prix.html.twig', [
+            'bien' => $prix,
             'form' => $form,
         ]);
     }
@@ -215,14 +298,27 @@ class BiensController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_biens_show', methods: ['GET'])]
-    public function show(Biens $bien, BiensRepository $biensRepository): Response
+    public function show(Biens $bien, BiensRepository $biensRepository, MessagesRepository $messagesRepository, Request $request): Response
     {
+        $message = new Messages();
+        $form = $this->createForm(MessagesType::class, $message);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $messagesRepository->save($message, true);
+            $this->addFlash('success', 'Votre message a été envoyer avec succes. Nous vous contacterons dans les plusbrefs délais.');
+        }
+        $biensearch = new BienSearch();
+        $form_search = $this->createForm(BienSearchType::class, $biensearch);
+        $form_search->handleRequest($request);
         $value['type'] = $bien->isType();
         $value['type_bien'] = $bien->getTypeBien();
+        $value['current'] = $bien->getId();
         $biens = $biensRepository->findByExampleField($value);
         return $this->render('biens/show.html.twig', [
             'bien' => $bien,
-            'biens' => $biens
+            'biens' => $biens,
+            'form' => $form->createView(),
+            'form_search' => $form_search->createView()
         ]);
     }
 
@@ -389,5 +485,16 @@ class BiensController extends AbstractController
         }
 
         return $this->redirectToRoute('app_type_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/delete_prix/{id}', name: 'app_prix_delete', methods: ['POST'])]
+    public function delete_prix(Request $request, Prix $prix, PrixRepository $prixRepository): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        if ($this->isCsrfTokenValid('delete'.$prix->getId(), $request->request->get('_token'))) {
+            $prixRepository->remove($prix, true);
+        }
+
+        return $this->redirectToRoute('app_prix_index', [], Response::HTTP_SEE_OTHER);
     }
 }

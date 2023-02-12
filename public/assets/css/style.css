@@ -19,7 +19,21 @@ pre, code, kbd, samp { font-family: monospace, sans-serif; }
 
 
 body { background: #EEE; color: #444; line-height: 1.4em; }
-
+div#bien_search_ville_chosen {
+  height: auto !important;
+}
+div#biensearch_params_ville_chosen {
+  height: auto !important;
+}
+div#biensearch_params_typeBien_chosen {
+  height: auto !important;
+}
+div#bien_search_typeBien_chosen {
+  height: auto !important;
+}
+div#bien_search_prix_chosen {
+  height: auto !important;
+}
 header h1 { color: black; font-size: 2em; line-height: 1.1em; display: inline-block; height: 27px; margin: 20px 0 25px; }
 header h1 small { font-size: 0.6em; }
 

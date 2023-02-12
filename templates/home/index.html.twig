@@ -51,6 +51,7 @@
         </div>
         <div class="container py-md-3">
             <div class="row mt-5 pt-3">
+                {% if pager|default%}
             {% for bien in pager %}
                 {% set image = bien.images | first %}
                 <div class="grids4-info  col-lg-4 col-md-6">
@@ -91,13 +92,17 @@
                         <p class="rent">{{ bien.ville.nom }}</p>
                         <ul>
                             <li><span class="fa fa-bed"></span> {{ bien.pieces }} chambres</li>
-                            <li><span class="fa fa-home"></span>{{ bien.etat }}</li>
                             <li><span class="fa fa-share-square-o"></span> {{ bien.surface }} mètres</li>
                         </ul>
                     </div>
                 </div>
             {% endfor %}
-            {{ pagerfanta(pager) }}
+                {% else %}
+                    Aucun Résultat Trouvé! Essayez d'agrandir votre recherche.
+                {% endif %}
+                {% if pager|default%}
+                    {{ pagerfanta(pager) }}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -142,8 +147,22 @@
                     console.log(data);
                 })
         });
+        $(document).on("change",'#bien_search_type',function () {
+            $('#bien_search_prix').val();
+            $('#bien_search_prix').empty(); //remove all child nodes
+            if ($(this).val() === 'A Vendre'){
+                var liste = {{ listes_prix_vente|json_encode|raw }};
+            }else{
+                var liste = {{ listes_prix_location|json_encode|raw }};
+            }
+            var newOption = $('<option value="">Prix</option>');
+            $('#bien_search_prix').append(newOption);
+            $.each(liste, function(key, value) {
+                var newOption = $('<option value="'+key+'">'+value+'</option>');
+                $('#bien_search_prix').append(newOption);
+            });
 
-
-
+            $('#bien_search_prix').trigger("chosen:updated");
+        });
     </script>
 {% endblock %}

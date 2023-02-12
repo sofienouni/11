@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BiensRepository::class)]
 class Biens
@@ -62,6 +63,11 @@ class Biens
     private ?Villes $ville = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/[0-9]/',
+        message: 'Your name cannot contain a number'
+    )]
     private ?float $prix = null;
 
     #[ORM\OneToMany(mappedBy: 'bien', targetEntity: Images::class,  cascade:["remove"] )]

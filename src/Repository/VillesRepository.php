@@ -48,13 +48,13 @@ class VillesRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('m')->orderBy('m.id','desc');
     }
 
-//    public function findOneBySomeField($value): ?Villes
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function verif_exist($value): ?Villes
+    {
+        return $this->createQueryBuilder('v')
+            ->andWhere('upper(v.nom) = upper(:val)')
+            ->setParameter('val', $value['nom'])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
