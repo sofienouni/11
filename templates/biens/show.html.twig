@@ -68,8 +68,13 @@
                             {% endif %}
                             <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ type }}</li>
                             <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.ville.nom }}</li>
+                            {% if bien.metrecaree %}
+                                {% set unite = 'DT/M²' %}
+                            {% else %}
+                                {% set unite = 'DT' %}
+                            {% endif %}
                             {% if bien.prix|default %}
-                                <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.prix }} DT</li>
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ bien.prix }} {{ unite }}</li>
                             {% endif %}
                             {% set ref_principale = bien.ref %}
                         </ul>

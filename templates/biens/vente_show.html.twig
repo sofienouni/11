@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonce{% endblock %}
+
+{% block body %}
+    <section class="w3l-content-with-photo-4" id="about">
+        <div id="content-with-photo4-block" class="py-5">
+            <div class="container py-md-3">
+                <div class="cwp4-two row">
+                    <div class="cwp4-text col-lg-6">
+                        <h3>Annonce Client</h3>
+                        <ul class="cont-4">
+                            {% if vente.nom|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Nom : {{ vente.nom }}</li>
+                            {% endif %}
+                            {% if vente.prenom|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Prènom : {{ vente.prenom }}</li>
+                            {% endif %}
+                            {% if vente.email|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Email : {{ vente.email }}</li>
+                            {% endif %}
+                            {% if vente.telephone|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Télephone : {{ vente.telephone }}</li>
+                            {% endif %}
+                            {% if vente.operation|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>{{ vente.operation }}</li>
+                            {% endif %}
+                            {% if vente.typeBien|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Type Du Bien : {{ vente.typeBien }}</li>
+                            {% endif %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Ville : {{ vente.ville.nom }}</li>
+                            {% if vente.message|default %}
+                                <li><span class="mr-3 fa fa-long-arrow-right"></span>Message : {{ vente.message }}</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% set image = vente.images|first %}
+
+
+                    {% if image.url is defined %}
+                        <div id="custCarousel" class="carousel slide" data-ride="carousel" style="width: 50%;margin: auto;" align="center">
+                            <!-- slides -->
+                            <div class="carousel-inner">
+                                {% set active = true %}
+                                {% for image in vente.images %}
+                                    {% if image is defined %}
+                                        {% if image.url is empty %}
+                                        {% else %}
+                                            {% if active %}
+                                                <div class="carousel-item active">
+                                                    <img src="{{ asset("assets/images/"  ~ image.url) }}" width="100%" height="400" alt="Hills">
+                                                </div>
+                                                {% set active = false %}
+                                            {% else %}
+                                                <div class="carousel-item">
+                                                    <img src="{{ asset("assets/images/"  ~ image.url) }}" width="100%" height="400" alt="Hills">
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <!-- Left right -->
+                            <a class="carousel-control-prev" href="#custCarousel" data-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </a>
+                            <a class="carousel-control-next" href="#custCarousel" data-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="cwp4-image col-lg-6 pl-lg-5 mt-lg-0 mt-5">
+                            <img src="{{ asset("assets/images/pexels-photomix-company-101808.jpg") }}" class="img-fluid" alt="" />
+                        </div>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

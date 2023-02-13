@@ -9,6 +9,7 @@ use App\Entity\Messages;
 use App\Entity\Prix;
 use App\Entity\Textes;
 use App\Entity\TypeBien;
+use App\Entity\Ventes;
 use App\Entity\VentesSearch;
 use App\Entity\Villes;
 use App\Form\BienSearchType;
@@ -321,6 +322,17 @@ class BiensController extends AbstractController
             'form_search' => $form_search->createView()
         ]);
     }
+
+    #[Route('/vente/{id}', name: 'app_vente_show', methods: ['GET'])]
+    public function vente_show(VentesRepository $ventesRepository, Ventes $ventes, Request $request): Response
+    {
+
+        $vente = $ventesRepository->find($ventes);
+        return $this->render('biens/vente_show.html.twig', [
+            'vente' => $vente,
+        ]);
+    }
+
 
 
     #[Route('/{id}/edit_ville', name: 'app_ville_edit', methods: ['GET', 'POST'])]

@@ -32,6 +32,7 @@
                     <div class="form-group">
                         <label>{{ form_label(form.surface) }}</label>
                         {{ form_widget(form.surface,{ 'attr': {'style': 'float: right;'} }) }}
+
                     </div>
                     <hr>
                     <div class="form-group">
@@ -103,6 +104,10 @@
                             <label>{{ form_label(form.prix) }}</label>
                             {{ form_widget(form.prix,{ 'attr': {'style': 'float: right;'} }) }}
                         </div>
+                        <div class="form-group">
+                            <label>/M²</label>
+                            {{ form_widget(form.metrecaree,{ 'attr': {'style': 'float: right;'} }) }}
+                        </div>
                     {% endif %}
                     <hr>
                     <div class="form-group">
@@ -115,16 +120,17 @@
                         {{ form_widget(form.photo,{ 'attr': {'style': 'float: right;','onchange' : 'loadFile(event)'} }) }}
                     </div>
                     <output class="w-100 pt-4">
-                    <div class="w-100 pt-4">
-                        {% for image in bien.images %}
-                            {% if image is defined %}
-                                {% if image.url is empty %}
-                                {% else %}
-                                    <img src="{{ asset("assets/images/"  ~ image.url) }}" height="100" width="100">
+                        <div class="w-100 pt-4">
+                            {% for image in bien.images %}
+                                {% if image is defined %}
+                                    {% if image.url is empty %}
+                                    {% else %}
+                                        <img src="{{ asset("assets/images/"  ~ image.url) }}" height="100" width="100">
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+                            {% endfor %}
+                        </div>
+                    </output>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>

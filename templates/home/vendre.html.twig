@@ -139,6 +139,12 @@
                                 <div class="form-group">
                                     {{ form_row(form.message,{ 'attr': {'class': 'form-control'} }) }}
                                 </div>
+                                <div class="form-group">
+                                    <label>{{ form_label(form.photo) }}</label>
+                                    {{ form_row(form.photo,{ 'attr': {'style': 'float: right;','onchange' : 'loadFile(event)'} }) }}
+                                </div>
+                                <output class="w-100 pt-4">
+                                </output>
 
 {#                                            <button type="submit" class="btn">Submit</button>#}
                                     <hr>
@@ -153,5 +159,29 @@
         </div>
     </section>
 
-
+    <script>
+        document.querySelector("#ventes_photo").addEventListener("change", (e) => {
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                const files = e.target.files;
+                const output = document.querySelector("output");
+                output.innerHTML = "";
+                for (let i = 0; i < files.length; i++) {
+                    if (!files[i].type.match("image")) continue;
+                    const imgReader = new FileReader();
+                    imgReader.addEventListener("load", function (event) {
+                        const imgFile = event.target;
+                        const img = document.createElement("img");
+                        img.className = "thumbnail"
+                        img.src = imgFile.result
+                        img.height = 100
+                        img.width = 100
+                        output.appendChild(img);
+                    });
+                    imgReader.readAsDataURL(files[i]);
+                }
+            } else {
+                alert("Your browser does not support File API");
+            }
+        });
+    </script>
 {% endblock %}

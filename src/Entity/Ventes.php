@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VentesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -55,6 +57,14 @@ class Ventes
 
     #[ORM\ManyToOne]
     private ?Villes $ville = null;
+
+    #[ORM\OneToMany(mappedBy: 'vente', targetEntity: ClientImages::class,  cascade:["remove"] )]
+    private Collection $images;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -178,6 +188,36 @@ class Ventes
     public function setVille(?Villes $ville): self
     {
         $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ClientImages>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(ClientImages $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setVente($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(ClientImages $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getVente() === $this) {
+                $image->setVente(null);
+            }
+        }
 
         return $this;
     }

@@ -289,6 +289,7 @@
                         <th>Type</th>
                         <th>Ville</th>
                         <th>Message</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -303,10 +304,9 @@
                             <td>{{ vente.ville }}</td>
                             <td>{{ vente.message }}</td>
 
-{#                            <td>#}
-{#                                <a href="{{ path('app_biens_edit', {'id': bien.id}) }}" class="edit"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>#}
-{#                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>#}
-{#                            </td>#}
+                            <td>
+                                <a href="{{ path('app_vente_show', {'id': vente.id}) }}" target="_blank" class="edit"><i class="material-icons" data-toggle="tooltip" title="Edit">open_in_browser</i></a>
+                            </td>
                         </tr>
                     {% endfor %}
                     {{ pagerfanta(ventes) }}

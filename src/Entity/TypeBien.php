@@ -35,6 +35,6 @@ class TypeBien
 
     public function __toString()
     {
-        return strtoupper($this->nom);
+        return mb_strtoupper($this->nom);
     }
 }

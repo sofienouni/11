@@ -4,10 +4,12 @@ namespace App\Form;
 
 use App\Entity\TypeBien;
 use App\Entity\Ventes;
+use App\Entity\Villes;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -59,17 +61,36 @@ class VentesType extends AbstractType
                 'required' => false
 
             ])
-            ->add('ville', null, [
+            ->add('ville', EntityType::class, [
+                'placeholder' => 'Choisir une ville',
+                'label' => false,
                 'attr' => array(
-                    'placeholder' => 'Ville',
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Choisir une ville',
                 ),
-                'label' => false
+                'class' => Villes::class,
+                'required' => false
+
             ])
             ->add('message', null, [
                 'attr' => array(
                     'placeholder' => 'Laisser votre message ici',
                 ),
                 'label' => false
+            ])
+            ->add('photo', FileType::class, [
+                'label' => 'Images du Bien',
+                'multiple' => true,
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+
+                // unmapped fields can't define their validation using annotations
+                // in the associated entity, so you can use the PHP constraint classes
+
             ])
         ;
     }

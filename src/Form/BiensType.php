@@ -21,6 +21,7 @@ class BiensType extends AbstractType
             ->add('description',CKEditorType::class)
             ->add('pieces')
             ->add('surface')
+            ->add('metrecaree')
             ->add('etage')
             ->add('chauffage')
             ->add('climatisation')
@@ -47,7 +48,7 @@ class BiensType extends AbstractType
                     'data-placeholder' => 'Type du bien',
                 ),
                 'class' => TypeBien::class,
-                'required' => false
+                'required' => true
 
             ])
             ->add('prix')

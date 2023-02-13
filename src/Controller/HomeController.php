@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Biens;
 use App\Entity\BienSearch;
 use App\Entity\BiensearchParams;
+use App\Entity\ClientImages;
+use App\Entity\Images;
 use App\Entity\Messages;
 use App\Entity\Ventes;
 use App\Entity\Villes;
@@ -13,6 +15,7 @@ use App\Form\BienSearchType;
 use App\Form\MessagesType;
 use App\Form\VentesType;
 use App\Repository\BiensRepository;
+use App\Repository\ClientImagesRepository;
 use App\Repository\MessagesRepository;
 use App\Repository\PrixRepository;
 use App\Repository\TextesRepository;
@@ -28,6 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class HomeController extends AbstractController
 {
@@ -268,7 +272,7 @@ class HomeController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $messagesRepository->save($message, true);
-            $this->addFlash('success', 'Votre message a été envoyer avec succes. Nous vous contacterons dans les plusbrefs délais.');
+            $this->addFlash('success', 'Votre message a été envoyer avec succes. Nous vous contacterons dans les plus brefs délais.');
             return $this->redirectToRoute('app_contact', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('home/contact.html.twig', [
@@ -308,17 +312,43 @@ class HomeController extends AbstractController
     }
 
     #[Route('/vendre', name: 'app_vendre')]
-    public function vendre(VentesRepository $ventesRepository,TextesRepository $textesRepository , Request $request): Response
+    public function vendre(VentesRepository $ventesRepository, ClientImagesRepository $clientImagesRepository ,TextesRepository $textesRepository, SluggerInterface $slugger, Request $request): Response
     {
 
         $vente = new Ventes();
         $form = $this->createForm(VentesType::class, $vente);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $now = new \DateTime();
             $vente->setDate($now);
             $ventesRepository->save($vente, true);
+            $liste_images = $form->get('photo')->getData();
+            foreach ($liste_images as $images){
+                if ($images) {
+                    $originalFilename = pathinfo($images->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $images->guessExtension();
+
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $images->move(
+                            $this->getParameter('images_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    $image = new ClientImages();
+                    $image->setUrl($newFilename);
+                    $image->setVente($vente);
+                    $clientImagesRepository->save($image, true);
+                }
+            }
+            $this->addFlash('success', 'Votre annonce a été déposer avec succes. Nous vous contacterons dans les plus brefs délais.');
             return $this->redirectToRoute('app_vendre', [], Response::HTTP_SEE_OTHER);
         }
         $textes = $textesRepository->findBy(['page' => 'vendre']);
@@ -330,7 +360,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/annonce', name: 'app_annonce')]
-    public function annonce(VentesRepository $ventesRepository,TextesRepository $textesRepository , Request $request): Response
+    public function annonce(VentesRepository $ventesRepository, ClientImagesRepository $clientImagesRepository, TextesRepository $textesRepository, SluggerInterface $slugger, Request $request): Response
     {
 
         $vente = new Ventes();
@@ -341,7 +371,34 @@ class HomeController extends AbstractController
             $now = new \DateTime();
             $vente->setDate($now);
             $ventesRepository->save($vente, true);
-            return $this->redirectToRoute('app_vendre', [], Response::HTTP_SEE_OTHER);
+            $liste_images = $form->get('photo')->getData();
+            foreach ($liste_images as $images){
+                if ($images) {
+                    $originalFilename = pathinfo($images->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $images->guessExtension();
+
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $images->move(
+                            $this->getParameter('images_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    $image = new ClientImages();
+                    $image->setUrl($newFilename);
+                    $image->setVente($vente);
+                    $clientImagesRepository->save($image, true);
+                }
+            }
+            $this->addFlash('success', 'Votre annonce a été déposer avec succes. Nous vous contacterons dans les plus brefs délais.');
+            return $this->redirectToRoute('app_annonce', [], Response::HTTP_SEE_OTHER);
         }
         $textes = $textesRepository->findBy(['page' => ['Déposer Une Annonce','vendre']]);
 

@@ -83,6 +83,9 @@ class Biens
     #[ORM\JoinColumn(nullable: false)]
     private ?TypeBien $typebien = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $metrecaree = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -348,6 +351,18 @@ class Biens
     public function setTypebien(?TypeBien $typebien): self
     {
         $this->typebien = $typebien;
+
+        return $this;
+    }
+
+    public function isMetrecaree(): ?bool
+    {
+        return $this->metrecaree;
+    }
+
+    public function setMetrecaree(?bool $metrecaree): self
+    {
+        $this->metrecaree = $metrecaree;
 
         return $this;
     }
